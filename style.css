@@ -87,6 +87,18 @@ a:hover {
     text-decoration: none;
 }
 
+/* The T-figure mark sits on the wordmark's baseline and scales with its font size. */
+.wordmark {
+    white-space: nowrap;
+}
+
+.wordmark-mark {
+    width: 0.95em;
+    height: 0.95em;
+    margin-right: 0.18em;
+    vertical-align: -0.14em;
+}
+
 .masthead nav {
     display: flex;
     gap: 1.4rem;
@@ -233,8 +245,35 @@ a:hover {
 }
 
 @media (max-width: 380px) {
+    .masthead .wrap {
+        gap: 10px;
+    }
+
+    .wordmark {
+        font-size: 21px;
+    }
+
+    .masthead nav {
+        font-size: 14px;
+    }
+
     .masthead nav a {
-        padding-left: 7px;
-        padding-right: 7px;
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+}
+
+@media (max-width: 340px) {
+    .wordmark {
+        font-size: 19px;
+    }
+
+    .masthead nav {
+        font-size: 13px;
+    }
+
+    .masthead nav a {
+        padding-left: 4px;
+        padding-right: 4px;
     }
 }

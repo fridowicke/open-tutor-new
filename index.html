@@ -3,10 +3,29 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>openTutor – der offene KI-Tutor für Schulen</title>
-    <meta name="description" content="openTutor ist der offene KI-Tutor für Schulen: Jede Schülerin und jeder Schüler übt eins zu eins mit dem Material der Lehrperson. Open Source, kostenlos, gehostet in der Schweiz und der EU.">
+    <title>openTutor – Das KI-Betriebssystem für Schulen</title>
+    <meta name="description" content="Das KI-Betriebssystem für Schulen: ein eigener Tutor für jedes Kind, mit dem Material der Lehrperson. Open Source, kostenlos, Server in der Schweiz und der EU.">
+    <link rel="canonical" href="https://open.tutor.new/">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="openTutor">
+    <meta property="og:locale" content="de_CH">
+    <meta property="og:url" content="https://open.tutor.new/">
+    <meta property="og:title" content="openTutor – Das KI-Betriebssystem für Schulen">
+    <meta property="og:description" content="Das KI-Betriebssystem für Schulen: ein eigener Tutor für jedes Kind, mit dem Material der Lehrperson. Open Source, kostenlos, Server in der Schweiz und der EU.">
+    <meta property="og:image" content="https://open.tutor.new/og/opentutor.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="openTutor – Das KI-Betriebssystem für Schulen. Ein Schulhaus im Schnitt: vier Zimmer, verbunden mit einem Server im Keller.">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://open.tutor.new/#website", "url": "https://open.tutor.new/", "name": "openTutor", "inLanguage": "de", "publisher": {"@id": "https://open.tutor.new/#organization"}}, {"@type": "Organization", "@id": "https://open.tutor.new/#organization", "name": "openTutor", "url": "https://open.tutor.new/", "logo": "https://open.tutor.new/icon-512.png"}]}</script>
     <link rel="preload" href="/fonts/Castoro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="/style.css?v=e0d635305e">
+    <link rel="stylesheet" href="/style.css?v=c2c5f101f2">
     <style>
         .lead {
             text-wrap: balance;
@@ -1156,43 +1175,9 @@
         }
 
         /* FAQ: questions and short answers in two columns. */
-        .faq {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px 48px;
-            margin: 0;
-        }
-
-        .faq div {
-            padding-top: 14px;
-            border-top: 1px solid var(--rule);
-        }
-
-        .faq dt {
-            margin-bottom: 6px;
-            font-family: var(--serif);
-            font-size: 21px;
-            line-height: 1.25;
-        }
-
-        .faq a {
-            white-space: nowrap;
-        }
-
-        .faq dd {
-            margin: 0;
-            font-size: 16px;
-            color: var(--muted);
-        }
-
         @media (max-width: 860px) {
-            .sheet-grid,
-            .faq {
+            .sheet-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .faq {
-                gap: 22px;
             }
         }
 
@@ -1206,13 +1191,114 @@
                 gap: 2px;
             }
         }
+
+        /* FAQ: only the questions show, in two columns; a click on a row opens its answer and
+           closes the one open before (details sharing a name). */
+        .qa {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 48px;
+            align-items: start;
+        }
+
+        .qa-col {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .qa details {
+            border-top: 1px solid var(--rule);
+        }
+
+        .qa summary {
+            display: flex;
+            gap: 16px;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 13px 0 14px;
+            font-family: var(--serif);
+            font-size: 19px;
+            line-height: 1.3;
+            list-style: none;
+            cursor: pointer;
+        }
+
+        .qa summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .qa summary::after {
+            content: "+";
+            flex: none;
+            font-family: var(--sans);
+            font-size: 22px;
+            line-height: 1;
+            color: var(--muted);
+            transition: transform 0.25s ease;
+        }
+
+        .qa details[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        .qa summary:hover {
+            color: #2747c4;
+        }
+
+        .qa p {
+            max-width: 34em;
+            margin: -2px 0 18px;
+            font-size: 16px;
+            color: var(--muted);
+        }
+
+        .qa a {
+            white-space: nowrap;
+        }
+
+        /* Anpassen: the mini-app panel is one link to the Lernspiele page. */
+        a.two-card {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a.two-card .two-vis {
+            transition: background 0.2s ease;
+        }
+
+        a.two-card:hover .two-vis {
+            background: #c4e8d3;
+        }
+
+        a.two-card:hover h3 {
+            color: #2747c4;
+        }
+
+        .two-card .go {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        a.two-card:hover .go {
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 860px) {
+            .qa {
+                grid-template-columns: 1fr;
+            }
+
+            .qa-col:first-child {
+                border-bottom: 0;
+            }
+        }
     </style>
 </head>
 <body>
 
 <header class="masthead">
     <div class="wrap">
-        <a class="wordmark" href="/">openTutor</a>
+        <a class="wordmark" href="/"><svg class="wordmark-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="11.5" r="6.5" fill="#14a35a"/><path stroke="currentColor" d="M9 23c11 7 35 7 46 0M32 28.5V57" fill="none" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>openTutor</a>
         <nav aria-label="Links">
             <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
             <a href="mailto:friedrich@tutor.new">Kontakt</a>
@@ -1294,7 +1380,7 @@
                 <li>
                     <svg class="icon icon-safe" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path class="ic-shield" d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path class="ic-tick" pathLength="1" d="M8.8 12.2l2.2 2.2 4.3-4.6"/></g></svg>
                     <h2>Privat &amp; sicher</h2>
-                    <p>Server in der Schweiz und der EU, nach DSG und DSGVO. Die Daten Ihrer Klassen trainieren keine KI-Modelle. <a href="/datenschutz.html">Zum Datenschutz-Steckbrief</a></p>
+                    <p>Server in der Schweiz und der EU, nach DSG und DSGVO und höchsten <a href="/datenschutz.html">Datenschutz</a>-Standards.</p>
                 </li>
                 <li>
                     <svg class="icon icon-free" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path class="ic-top" d="M4 8.5h15M15.5 5l3.5 3.5-3.5 3.5"/><path class="ic-bot" d="M20 15.5H5M8.5 12L5 15.5 8.5 19"/></g></svg>
@@ -1418,16 +1504,16 @@
                 <p>Jede Schule ist anders, jede Klasse auch.</p>
             </div>
             <div class="two">
-                <article>
+                <a class="two-card" href="/lernspiele.html">
                     <div class="two-vis" aria-hidden="true">
                         <div class="mini">
                             <div class="mini-app"><i><svg viewBox="0 0 32 32" width="30" height="30"><rect x="3" y="3" width="11.5" height="11.5" rx="2.5" fill="#c4521f"/><rect x="17.5" y="3" width="11.5" height="11.5" rx="2.5" fill="#fff" stroke="#c4521f" stroke-width="2"/><rect x="3" y="17.5" width="11.5" height="11.5" rx="2.5" fill="#fff" stroke="#c4521f" stroke-width="2"/><rect x="17.5" y="17.5" width="11.5" height="11.5" rx="2.5" fill="#c4521f"/><path d="M6.5 9h4.5M8.75 6.2v.01M8.75 11.8v.01M21 24h4.5M23.25 21.2v.01M23.25 26.8v.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></i><b>Bruch-Memory</b><span>von Frau Keller</span><span class="mini-tag">in Klasse 7b</span></div>
                             <div class="scores"><b>Ergebnisse</b><div><span>Ada</span><em>18 / 20</em></div><div><span>Ben</span><em>15 / 20</em></div><div><span>Clara</span><em>20 / 20</em></div></div>
                         </div>
                     </div>
-                    <h3>Eigene Mini-Apps verteilen</h3>
+                    <h3>Eigene Mini-Apps verteilen <span class="go" aria-hidden="true">→</span></h3>
                     <p>Selbst gebaute Lernspiele an die Klasse verteilen: Sie laufen geschützt auf openTutor, und die Ergebnisse kommen bei Ihnen an.</p>
-                </article>
+                </a>
                 <article>
                     <div class="two-vis" aria-hidden="true">
                         <div class="code"><span class="f"># schule.yaml</span><br><span class="k">name:</span> <span class="v">Kantonsschule Musterhausen</span><br><span class="k">sprachen:</span> <span class="v">[de, fr, en]</span><br><span class="add"><span class="k">notenskala:</span> <span class="v">1–6, halbe Noten</span></span><span class="add"><span class="k">anmeldung:</span> <span class="v">Schul-Login</span></span><span class="k">tutor_zeit:</span> <span class="v">30 min pro Woche</span></div>
@@ -1452,7 +1538,7 @@
                         <li>Eigener Server, Schweiz oder EU</li>
                         <li>Einrichtung und Updates von uns</li>
                     </ul>
-                    <a class="btn btn-primary" href="https://tutor.new/gespraech.html">Gespräch vereinbaren</a>
+                    <a class="btn btn-primary" href="mailto:friedrich@tutor.new?subject=Gespr%C3%A4ch%20zu%20openTutor">Gespräch vereinbaren</a>
                 </div>
                 <div class="host host-self">
                     <div class="host-top"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 28L32 10l24 18" fill="none" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/><path d="M13 25v29h38V25" fill="#fff" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/><rect x="27" y="36" width="10" height="18" fill="#fde0cd" stroke="#111" stroke-width="2.5"/><rect x="40" y="31" width="9" height="13" rx="2" fill="#12734a"/><circle cx="44.5" cy="35" r="1.4" fill="#fff"/><path d="M42.5 39.5h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg><div><h3>Selbst betreiben</h3><p class="host-price">Kostenlos, eigene Server- und KI-Kosten</p></div></div>
@@ -1470,16 +1556,20 @@
             <div class="sbs-head">
                 <h2>Häufige Fragen</h2>
             </div>
-            <dl class="faq">
-                <div><dt>Für welche Fächer und Stufen?</dt><dd>Für alle Fächer und Stufen. Der Tutor übt mit dem Material, das Sie hochladen.</dd></div>
-                <div><dt>Bekommen die Schüler:innen Lösungen vorgesagt?</dt><dd>Nein. Der Tutor fragt zurück und gibt Denkanstösse, den nächsten Schritt machen die Schüler:innen selbst.</dd></div>
-                <div><dt>Was, wenn die KI Fehler macht?</dt><dd>Der Tutor arbeitet mit Ihrem Material, nicht mit dem freien Netz. Und Sie sehen jede Interaktion und können eingreifen.</dd></div>
-                <div><dt>Was geschieht mit den Daten?</dt><dd>Sie bleiben auf Servern in der Schweiz oder EU, nach DSG und DSGVO, und trainieren keine KI-Modelle. Mehr im <a href="/datenschutz.html">Datenschutz-Steckbrief</a>.</dd></div>
-                <div><dt>Wer sieht die Gespräche?</dt><dd>Die Lehrpersonen der Klasse. Berührt ein Gespräch ein heikles Thema, wird die Lehrperson informiert.</dd></div>
-                <div><dt>Brauchen die Schüler:innen ein Schulgerät?</dt><dd>Nein. openTutor läuft im Browser und als App, auch auf dem eigenen Handy. Angemeldet wird mit einem Code.</dd></div>
-                <div><dt>Was kostet openTutor?</dt><dd>Selbst betrieben nichts. Bei uns gehostet ebenfalls nichts, bezahlt wird nur die KI-Nutzung als Tutor-Zeit.</dd></div>
-                <div><dt>Wie lange dauert die Einführung?</dt><dd>Eine Klasse ist in einer Freistunde eingerichtet: Material hochladen, Codes verteilen, loslegen.</dd></div>
-            </dl>
+            <div class="qa">
+                <div class="qa-col">
+                    <details name="faq"><summary>Für welche Fächer und Stufen?</summary><p>Für alle Fächer und Stufen. Der Tutor übt mit dem Material, das Sie hochladen.</p></details>
+                    <details name="faq"><summary>Bekommen die Schüler:innen Lösungen vorgesagt?</summary><p>Nein. Der Tutor fragt zurück und gibt Denkanstösse, den nächsten Schritt machen die Schüler:innen selbst.</p></details>
+                    <details name="faq"><summary>Was, wenn die KI Fehler macht?</summary><p>Der Tutor arbeitet mit Ihrem Material, nicht mit dem freien Netz. Und Sie sehen jede Interaktion und können eingreifen.</p></details>
+                    <details name="faq"><summary>Was geschieht mit den Daten?</summary><p>Sie bleiben auf Servern in der Schweiz oder EU, nach DSG und DSGVO, und trainieren keine KI-Modelle. Mehr im <a href="/datenschutz.html">Datenschutz-Steckbrief</a>.</p></details>
+                </div>
+                <div class="qa-col">
+                    <details name="faq"><summary>Wer sieht die Gespräche?</summary><p>Die Lehrpersonen der Klasse. Berührt ein Gespräch ein heikles Thema, wird die Lehrperson informiert.</p></details>
+                    <details name="faq"><summary>Brauchen die Schüler:innen ein Schulgerät?</summary><p>Nein. openTutor läuft im Browser und als App, auch auf dem eigenen Handy. Angemeldet wird mit einem Code.</p></details>
+                    <details name="faq"><summary>Was kostet openTutor?</summary><p>Selbst betrieben nichts. Bei uns gehostet ebenfalls nichts, bezahlt wird nur die KI-Nutzung als Tutor-Zeit.</p></details>
+                    <details name="faq"><summary>Wie lange dauert die Einführung?</summary><p>Eine Klasse ist in einer Freistunde eingerichtet: Material hochladen, Codes verteilen, loslegen.</p></details>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1487,12 +1577,11 @@
 
 <footer class="colophon">
     <div class="wrap">
-        <p>openTutor wird von der Sophia Edu Labs GmbH in Zürich entwickelt.</p>
+        <p>openTutor wird von der Sophia Labs GmbH in Zürich entwickelt.</p>
         <a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a>
         <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
-        <a href="https://tutor.new/impressum.html">Impressum</a>
-        <a href="/datenschutz.html">Datenschutz</a>
-        <a href="https://tutor.new">tutor.new</a>
+        <a href="/impressum.html">Impressum</a>
+        <a href="/impressum.html#datenschutz">Datenschutz</a>
     </div>
 </footer>
 

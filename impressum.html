@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Impressum und Datenschutz – openTutor</title>
+    <meta name="description" content="Impressum und Datenschutzerklärung der Website openTutor, Sophia Labs GmbH, Zürich.">
+    <link rel="canonical" href="https://open.tutor.new/impressum.html">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="openTutor">
+    <meta property="og:locale" content="de_CH">
+    <meta property="og:url" content="https://open.tutor.new/impressum.html">
+    <meta property="og:title" content="Impressum und Datenschutz – openTutor">
+    <meta property="og:description" content="Impressum und Datenschutzerklärung der Website openTutor, Sophia Labs GmbH, Zürich.">
+    <meta property="og:image" content="https://open.tutor.new/og/opentutor.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="openTutor – Das KI-Betriebssystem für Schulen. Ein Schulhaus im Schnitt: vier Zimmer, verbunden mit einem Server im Keller.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="/fonts/Castoro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/style.css?v=c2c5f101f2">
+    <style>
+        /* Privacy fact sheet: four groups side by side, each with a two-tone icon and ruled terms,
+           a legal note, and a call to action for the school's data protection office. */
+        .dp {
+            padding: 64px 0 88px;
+        }
+
+        .dp-back {
+            display: inline-block;
+            margin-bottom: 28px;
+            font-size: 15px;
+        }
+
+        .dp h1 {
+            margin: 0 0 14px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(40px, 5.4vw, 64px);
+            line-height: 1.05;
+            letter-spacing: -0.015em;
+        }
+
+        .dp-lead {
+            max-width: 34em;
+            margin: 0 0 48px;
+            font-size: 20px;
+        }
+
+        .dp-groups {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            border-top: 1px solid var(--ink);
+            border-bottom: 1px solid var(--ink);
+        }
+
+        .dp-group {
+            padding: 24px 22px 26px;
+        }
+
+        .dp-group:first-child {
+            padding-left: 0;
+        }
+
+        .dp-group:last-child {
+            padding-right: 0;
+        }
+
+        .dp-group + .dp-group {
+            border-left: 1px solid var(--rule);
+        }
+
+        .dp-icon {
+            display: block;
+            width: 76px;
+            height: 76px;
+            margin: 0 0 14px -6px;
+        }
+
+        .dp-icon .tint { fill: var(--tint); }
+        .dp-icon .glyph { fill: none; stroke: var(--tone); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+        .dp-blue { --tone: #2747c4; --tint: #dde5ff; }
+        .dp-green { --tone: #12734a; --tint: #d3efdf; }
+        .dp-orange { --tone: #c4521f; --tint: #fde0cd; }
+        .dp-purple { --tone: #7b4aa0; --tint: #efe3f7; }
+
+        .dp-group h2 {
+            margin: 0 0 12px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 26px;
+            line-height: 1.15;
+        }
+
+        .dp-group dl {
+            margin: 0;
+        }
+
+        .dp-group dl div {
+            padding: 11px 0 12px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .dp-group dt {
+            font-size: 12.5px;
+            font-weight: 650;
+            letter-spacing: 0.02em;
+            color: var(--muted);
+        }
+
+        .dp-group dd {
+            margin: 2px 0 0;
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .dp-group small {
+            display: block;
+            margin-top: 3px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: var(--muted);
+        }
+
+        .dp-legal {
+            max-width: 46em;
+            margin: 18px 0 0;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .dp-cta {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) auto;
+            gap: 24px 48px;
+            align-items: center;
+            margin-top: 56px;
+            padding: 30px 34px;
+            background: #d3efdf;
+        }
+
+        .dp-cta h2 {
+            margin: 0 0 8px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 1.15;
+        }
+
+        .dp-cta p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .dp-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 650;
+            text-decoration: none;
+            border: 1.5px solid var(--ink);
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: var(--ink);
+        }
+
+        .btn:hover {
+            color: #fff;
+            background: #2747c4;
+            border-color: #2747c4;
+        }
+
+        .colophon {
+            border-top: 3px solid var(--ink);
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .colophon .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 1.6rem;
+            padding-top: 18px;
+            padding-bottom: 44px;
+        }
+
+        .colophon p {
+            margin: 0 auto 0 0;
+        }
+
+        @media (max-width: 1000px) {
+            .dp-groups {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dp-group:nth-child(3) {
+                padding-left: 0;
+                border-left: 0;
+            }
+
+            .dp-group:nth-child(2) {
+                padding-right: 0;
+            }
+
+            .dp-group:nth-child(n + 3) {
+                border-top: 1px solid var(--ink);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dp {
+                padding-top: 40px;
+            }
+
+            .dp-groups {
+                grid-template-columns: 1fr;
+            }
+
+            .dp-group,
+            .dp-group:nth-child(2),
+            .dp-group:nth-child(3) {
+                padding: 22px 0 24px;
+                border-left: 0;
+            }
+
+            .dp-group + .dp-group {
+                border-top: 1px solid var(--ink);
+                border-left: 0;
+            }
+
+            .dp-cta {
+                grid-template-columns: 1fr;
+                padding: 24px 22px;
+            }
+        }
+
+        /* Imprint and privacy notice: ruled rows, a short label on the left and the text on the right. */
+        .lg-rows {
+            max-width: 980px;
+            margin: 0 0 64px;
+            border-top: 1px solid var(--ink);
+        }
+
+        .lg-rows > div {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 4px 32px;
+            padding: 16px 0 18px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .lg-rows dt {
+            font-weight: 650;
+        }
+
+        .lg-rows dd {
+            max-width: 40em;
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .lg-rows dd p {
+            margin: 0 0 8px;
+        }
+
+        .lg-rows dd p:last-child {
+            margin: 0;
+        }
+
+        .dp h2 {
+            margin: 0 0 14px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(30px, 3.4vw, 40px);
+            line-height: 1.1;
+            scroll-margin-top: 24px;
+        }
+
+        .lg-date {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 640px) {
+            .lg-rows > div {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="masthead">
+    <div class="wrap">
+        <a class="wordmark" href="/"><svg class="wordmark-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="11.5" r="6.5" fill="#14a35a"/><path stroke="currentColor" d="M9 23c11 7 35 7 46 0M32 28.5V57" fill="none" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>openTutor</a>
+        <nav aria-label="Links">
+            <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+            <a href="mailto:friedrich@tutor.new">Kontakt</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="dp">
+        <div class="wrap">
+            <a class="dp-back" href="/">← Zurück zu openTutor</a>
+            <h1>Impressum</h1>
+            <dl class="lg-rows">
+                <div><dt>Anbieterin</dt><dd><p>Sophia Labs GmbH<br>c/o Gero Embser<br>Schärenmoosstrasse 76<br>8052 Zürich<br>Schweiz</p></dd></div>
+                <div><dt>Kontakt</dt><dd><p><a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a></p></dd></div>
+                <div><dt>Vertretungsberechtigt</dt><dd><p>Friedrich Wicke (Vorsitzender der Geschäftsführung)<br>Gero Embser (Geschäftsführer)</p></dd></div>
+                <div><dt>Handelsregister</dt><dd><p>Kanton Zürich<br>UID: CHE-441.358.240</p></dd></div>
+            </dl>
+            <h2 id="datenschutz">Datenschutz</h2>
+            <dl class="lg-rows">
+                <div><dt>Verantwortlich</dt><dd><p>Sophia Labs GmbH, Adresse wie oben, <a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a>.</p></dd></div>
+                <div><dt>Keine Cookies, kein Tracking</dt><dd><p>Diese Website setzt keine Cookies, misst keine Besuche und lädt keine Inhalte von anderen Servern. Schriften und Vorschauen liegen auf dieser Website selbst, die Vorschauen laufen ganz in Ihrem Browser.</p></dd></div>
+                <div><dt>Hosting</dt><dd><p>Die Website liegt bei GitHub Pages (GitHub, Inc., USA). Beim Aufruf verarbeitet GitHub technisch nötige Daten wie IP-Adresse, Zeitpunkt und aufgerufene Seite, um die Website auszuliefern und vor Missbrauch zu schützen. GitHub ist nach dem EU-US und dem Swiss-US Data Privacy Framework zertifiziert.</p><p>Grundlage ist unser berechtigtes Interesse an einer sicheren, erreichbaren Website (Art. 6 Abs. 1 lit. f DSGVO).</p></dd></div>
+                <div><dt>E-Mail</dt><dd><p>Wenn Sie uns schreiben, verwenden wir Ihre Angaben nur, um Ihre Anfrage zu beantworten.</p></dd></div>
+                <div><dt>Ihre Rechte</dt><dd><p>Sie können Auskunft, Berichtigung und Löschung Ihrer Daten verlangen und der Verarbeitung widersprechen, per E-Mail an <a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a>. Beschweren können Sie sich bei einer Datenschutz-Aufsichtsbehörde, in der Schweiz beim EDÖB.</p></dd></div>
+                <div><dt>openTutor in der Schule</dt><dd><p>Für die Nutzung durch Schulen gelten der Vertrag mit der Schule und die Vereinbarung zur Auftragsverarbeitung. Was wir dabei zusagen, steht im <a href="/datenschutz.html">Datenschutz-Steckbrief</a>.</p></dd></div>
+            </dl>
+            <p class="lg-date">Stand: November 2026</p>
+        </div>
+    </section>
+</main>
+
+<footer class="colophon">
+    <div class="wrap">
+        <p>openTutor wird von der Sophia Labs GmbH in Zürich entwickelt.</p>
+        <a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a>
+        <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+        <a href="/impressum.html">Impressum</a>
+        <a href="/impressum.html#datenschutz">Datenschutz</a>
+    </div>
+</footer>
+
+</body>
+</html>
