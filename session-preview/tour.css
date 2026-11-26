@@ -1,0 +1,690 @@
+/* Additions to the session preview for the pupil tour on os.html. Loaded by the preview itself;
+   the page adds two tabs, the worksheet and the work plan, and toggles classes on <html>:
+     tour-no-pip, tour-mat       materials or hand-in view (call tile hidden, extra tab shown)
+     tour-sheet                  the worksheet tab is open
+     tour-planview, tour-p-*     the work plan tab is open, and the hand-in phase
+   Sizes are in the preview's own 1080 x 600 layout. */
+@font-face {
+    font-family: "Castoro";
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/Castoro-400-latin.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Hanken Grotesk";
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("/fonts/HankenGrotesk-variable-latin.woff2") format("woff2");
+}
+
+/* A narrower chat and a wider notes side. Phones show one side at a time, so they keep the
+   original split. */
+@media (min-width: 517px) {
+    .fs {
+        grid-template-columns: minmax(0, 32fr) 0 minmax(0, 68fr);
+    }
+}
+
+.fs-pip {
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+html.tour-no-pip .fs-pip {
+    opacity: 0;
+    transform: scale(0.85);
+}
+
+/* Outside the call view the notes show complete, wherever the session loop happens to be. */
+html.tour-no-pip .fs-notes [data-fs-step] {
+    display: block !important;
+}
+
+html.tour-no-pip .fs-notes .fs-row[data-fs-step] {
+    display: grid !important;
+}
+
+/* Tabs: the unused drawing tab is left out; a worksheet tab is added in the materials view and
+   takes the active look from "Mitschrift" while it is open. */
+.fs-tabs span:nth-child(2):not([data-tour-tab]) {
+    display: none;
+}
+
+.fs-tabs [data-tour-tab] {
+    display: none;
+}
+
+html.tour-mat .fs-tabs [data-tour-tab="sheet"] {
+    display: inline-flex;
+}
+
+html.tour-sheet .fs-tabs span.is-active {
+    color: var(--s-muted);
+    background: transparent;
+}
+
+html.tour-sheet .fs-tabs [data-tour-tab="sheet"] {
+    color: var(--s-ink);
+    background: #fff;
+}
+
+/* Materials scroll slowly once they are open, to show more of each. While the worksheet is open
+   the notes keep their scrolled position underneath, so they do not jump during the fade. */
+.fs-sheet {
+    --notes-y: -190px;
+    transition: opacity 0.4s ease;
+}
+
+html.tour-sheet .fs-sheet,
+html.tour-planview .fs-sheet {
+    opacity: 0;
+}
+
+.tour-ws-in {
+    --ws-y: -270px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html.tour-mat:not(.tour-sheet):not(.tour-planview) .fs-sheet {
+        animation: tour-notes-scroll 2.8s ease-in-out 1s both;
+    }
+
+    html.tour-sheet .fs-sheet {
+        transform: translateY(var(--notes-y));
+    }
+
+    @keyframes tour-notes-scroll {
+        from { transform: none; }
+        to { transform: translateY(var(--notes-y)); }
+    }
+
+    html.tour-sheet .tour-ws-in {
+        animation: tour-ws-scroll 3s ease-in-out 3.1s both;
+    }
+
+    @keyframes tour-ws-scroll {
+        from { transform: none; }
+        to { transform: translateY(var(--ws-y)); }
+    }
+}
+
+/* ---------- Worksheet ---------- */
+
+.tour-ws {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    color: #111;
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    background: #fff;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+}
+
+html.tour-sheet .tour-ws {
+    opacity: 1;
+    transform: none;
+}
+
+.tour-ws-in {
+    padding: 22px 34px 40px;
+}
+
+.tour-ws p {
+    margin: 0;
+}
+
+.ws-title {
+    margin: 0 0 0.25em !important;
+    padding-bottom: 0.2em;
+    font-family: "Castoro", Georgia, serif;
+    font-size: 2.1em;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    border-bottom: 1px solid #b5b5b5;
+}
+
+.ws-sub {
+    margin: 0 0 1em !important;
+    font-size: 0.95em;
+    font-style: italic;
+    color: #666;
+}
+
+.ws-math {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.1em;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.ws-task {
+    display: grid;
+    grid-template-columns: 3.2em minmax(0, 1fr) auto;
+    gap: 0 0.5em;
+    align-items: start;
+}
+
+.ws-no {
+    position: relative;
+    z-index: 0;
+    padding-left: 0.3em;
+    font-family: "Castoro", Georgia, serif;
+    font-size: 1.9em;
+    line-height: 1;
+}
+
+/* The sheets mark each task number with a brush stroke and a pale blot in one colour. */
+.ws-no::before {
+    content: "";
+    position: absolute;
+    top: 0.05em;
+    left: 0;
+    width: 0.14em;
+    height: 0.9em;
+    background: var(--c);
+    border-radius: 0.1em;
+    transform: rotate(4deg);
+}
+
+.ws-no::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0.36em;
+    right: -0.12em;
+    bottom: -0.06em;
+    left: 0.22em;
+    background: var(--c);
+    border-radius: 45% 55% 50% 50% / 60% 50% 50% 40%;
+    opacity: 0.2;
+}
+
+.ws-task b {
+    display: block;
+    font-weight: 650;
+}
+
+.ws-task p {
+    margin: 0.1em 0 0 !important;
+}
+
+.ws-pts {
+    padding-top: 0.25em;
+    font-size: 0.82em;
+    font-weight: 600;
+    color: #555;
+    white-space: nowrap;
+}
+
+.ws-table {
+    margin: 0.7em 0 0 3.7em;
+    border-collapse: collapse;
+}
+
+.ws-table td {
+    width: 2.45em;
+    height: 1.9em;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.ws-table tr:first-child td {
+    font-weight: 600;
+    background: #f6e6b0;
+}
+
+.ws-table tr + tr td + td {
+    background: #eef1fb;
+}
+
+.ws-rule {
+    margin: 0.9em 0;
+    border: 0;
+    border-top: 1px solid #333;
+}
+
+.ws-line {
+    margin: 0.5em 0 0 !important;
+    white-space: nowrap;
+}
+
+.ws-blank {
+    display: inline-block;
+    min-width: 2.4em;
+    text-align: center;
+    border-bottom: 1px solid #555;
+}
+
+.ws-blank-long {
+    min-width: 9em;
+}
+
+.ws-hand {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.1em;
+    font-style: italic;
+    color: #2747c4;
+}
+
+.ws-box {
+    display: inline-block;
+    width: 0.72em;
+    height: 0.72em;
+    margin: 0 0.2em 0 0.45em;
+    vertical-align: -0.05em;
+    border: 1px solid #333;
+}
+
+.ws-graph {
+    display: block;
+    width: 250px;
+    height: auto;
+    margin: 0.6em auto 0.4em;
+}
+
+/* The pupil's answers appear one after another when the worksheet opens. */
+@media (prefers-reduced-motion: no-preference) {
+    .tour-ws .ws-hand {
+        opacity: 0;
+    }
+
+    html.tour-sheet .tour-ws .ws-hand {
+        animation: ws-write 0.4s ease both;
+        animation-delay: var(--d, 0.6s);
+    }
+
+    @keyframes ws-write {
+        from { opacity: 0; transform: translateY(0.25em); }
+        to { opacity: 1; transform: none; }
+    }
+}
+
+/* ---------- Hand-in screen ---------- */
+/* Opens over the notes side (it covers the tab bar). Phases, set on <html> by the page:
+   tour-p-sheet (worksheet shown), -shrink (it shrinks into a file), -upload, -uploaded, -press,
+   -sent (being checked), -done (the marked result). */
+
+html.tour-sheet.tour-p-shrink .tour-ws {
+    opacity: 0;
+    transform: scale(0.06);
+    transform-origin: 8% 18%;
+    transition: transform 0.75s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.3s ease 0.5s;
+}
+
+.tour-plan {
+    --ab-good: #15803d;
+    --ab-good-bg: #dcfce7;
+    --ab-next: #b45309;
+    --ab-next-bg: #fef3c7;
+    --ab-bad: #b91c1c;
+    --ab-bad-bg: #fee2e2;
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    color: var(--s-ink);
+    font-family: var(--s-text);
+    font-size: 15px;
+    line-height: 1.35;
+    background: var(--s-paper);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+
+html.tour-p-shrink .tour-plan {
+    opacity: 1;
+    transition-delay: 0.45s;
+}
+
+html.tour-p-upload .tour-plan,
+html.tour-p-uploaded .tour-plan,
+html.tour-p-press .tour-plan,
+html.tour-p-sent .tour-plan,
+html.tour-p-done .tour-plan {
+    opacity: 1;
+}
+
+.tour-plan p,
+.tour-plan ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.hi-bar {
+    display: flex;
+    flex: none;
+    gap: 12px;
+    align-items: center;
+    height: 56px;
+    padding: 0 20px;
+    background: #fff;
+    border-bottom: 1px solid var(--s-line-cool);
+}
+
+.hi-bar svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: var(--s-muted);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.hi-bar b {
+    font-family: var(--s-display);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.hi-bar span {
+    color: var(--s-muted);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.hi-body {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    padding: 26px 30px;
+}
+
+/* The form: the file, a note, the button. */
+.hi-form {
+    display: grid;
+    gap: 12px;
+    max-width: 560px;
+}
+
+.hi-label {
+    color: var(--s-muted);
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.hi-file {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 4px 14px;
+    align-items: center;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid var(--s-line-cool);
+    border-radius: 14px;
+    box-shadow: var(--s-shadow-sm);
+}
+
+.hi-pdf {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 48px;
+    color: #fff;
+    font-family: var(--s-display);
+    font-size: 12px;
+    font-weight: 700;
+    background: #d0473a;
+    border-radius: 6px;
+}
+
+.hi-name b {
+    display: block;
+    font-weight: 700;
+}
+
+.hi-status {
+    color: var(--s-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.hi-status .ok {
+    display: none;
+    color: var(--ab-good);
+}
+
+html.tour-p-uploaded .hi-status .up,
+html.tour-p-press .hi-status .up,
+html.tour-p-sent .hi-status .up {
+    display: none;
+}
+
+html.tour-p-uploaded .hi-status .ok,
+html.tour-p-press .hi-status .ok,
+html.tour-p-sent .hi-status .ok {
+    display: inline;
+}
+
+.hi-track {
+    display: block;
+    height: 6px;
+    background: var(--s-line-cool);
+    border-radius: 3px;
+}
+
+.hi-track i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--s-success);
+    border-radius: 3px;
+}
+
+html.tour-p-upload .hi-track i {
+    width: 100%;
+    transition: width 1.7s cubic-bezier(0.3, 0, 0.6, 1);
+}
+
+html.tour-p-uploaded .hi-track i,
+html.tour-p-press .hi-track i,
+html.tour-p-sent .hi-track i {
+    width: 100%;
+}
+
+.hi-note {
+    padding: 11px 14px;
+    color: #9aa5b1;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid var(--s-line-cool);
+    border-radius: 12px;
+}
+
+.hi-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 46px;
+}
+
+.hi-btn {
+    padding: 11px 26px;
+    font-family: var(--s-display);
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--s-ink);
+    border-radius: 12px;
+    opacity: 0.35;
+    transition: opacity 0.3s, transform 0.15s;
+}
+
+html.tour-p-uploaded .hi-btn,
+html.tour-p-press .hi-btn {
+    opacity: 1;
+}
+
+html.tour-p-press .hi-btn {
+    transform: scale(0.93);
+}
+
+.hi-wait {
+    display: none;
+    gap: 4px;
+    align-items: center;
+    color: var(--s-muted);
+    font-weight: 700;
+}
+
+.hi-wait i {
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    border-radius: 50%;
+}
+
+html.tour-p-sent .hi-btn { display: none; }
+html.tour-p-sent .hi-wait { display: inline-flex; }
+
+/* The result replaces the form once the check is done. */
+.hi-result {
+    display: none;
+    grid-template-columns: 424px minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+}
+
+html.tour-p-done .hi-form { display: none; }
+html.tour-p-done .hi-result { display: grid; }
+
+.ab-side { display: grid; gap: 14px; justify-items: start; padding-top: 6px; }
+.ab-meta { color: var(--s-muted); font-size: 13.5px; font-weight: 600; }
+
+.ab-pill {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    padding: 5px 12px 5px 9px;
+    font-size: 14px;
+    font-weight: 800;
+    white-space: nowrap;
+    color: var(--ab-good);
+    background: var(--ab-good-bg);
+    border-radius: 999px;
+}
+
+.ab-pill svg,
+.ab-fb svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ab-score { font-family: var(--s-display); font-size: 44px; font-weight: 700; line-height: 1; white-space: nowrap; }
+.ab-score small { margin-left: 0.25em; font-size: 0.5em; font-weight: 600; color: var(--s-muted); }
+
+.ab-fb { display: grid; gap: 10px; margin-top: 2px; }
+.ab-fb li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; align-items: start; font-weight: 600; }
+.ab-fb i { display: grid; place-items: center; width: 24px; height: 24px; margin-top: -2px; font-style: normal; font-weight: 800; font-size: 14px; border-radius: 50%; }
+.ab-fb .good i { color: var(--ab-good); background: var(--ab-good-bg); }
+.ab-fb .bad i { color: var(--ab-bad); background: var(--ab-bad-bg); }
+
+/* The handed-in task, set like the teacher's sheet, with the marks of the check. */
+.ab-sheet {
+    position: relative;
+    padding: 16px 18px;
+    color: #111;
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    background: #fff;
+    border: 1px solid #dfe3e7;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 rgba(14, 51, 34, .05), 0 8px 22px rgba(14, 51, 34, .1);
+}
+
+.ab-sheet-title { padding-bottom: 0.25em; margin-bottom: 0.8em !important; font-family: "Castoro", Georgia, serif; font-size: 1.35em; line-height: 1.1; white-space: nowrap; border-bottom: 1px solid #b5b5b5; }
+.ab-sheet-task { display: grid; grid-template-columns: 3em minmax(0, 1fr) auto; gap: 0 0.4em; align-items: start; margin-bottom: 0.4em; }
+.ab-sheet-no { position: relative; z-index: 0; padding-left: 0.3em; font-family: "Castoro", Georgia, serif; font-size: 1.9em; line-height: 1; }
+.ab-sheet-no::before { content: ""; position: absolute; top: 0.05em; left: 0; width: 0.14em; height: 0.9em; background: #d0473a; border-radius: 0.1em; transform: rotate(4deg); }
+.ab-sheet-no::after { content: ""; position: absolute; z-index: -1; top: 0.36em; right: -0.12em; bottom: -0.06em; left: 0.22em; background: #d0473a; border-radius: 45% 55% 50% 50% / 60% 50% 50% 40%; opacity: 0.2; }
+.ab-sheet-task b { display: block; font-weight: 650; }
+.ab-sheet-pts { padding-top: 0.25em; font-size: 0.86em; font-weight: 600; color: #555; white-space: nowrap; }
+.ab-sheet-line { display: flex; align-items: center; height: 2.5em; white-space: nowrap; }
+.ab-sheet-line > b { flex: none; width: 1.7em; }
+.ab-sheet-line .m { font-family: "Times New Roman", Times, serif; font-size: 1.12em; font-style: italic; }
+.ab-sheet-line .s { margin-left: auto; padding-left: 0.7em; }
+.ab-blank { display: inline-block; min-width: 2em; text-align: center; border-bottom: 1px solid #555; }
+.ab-hand { font-family: "Times New Roman", Times, serif; font-size: 1.15em; font-style: italic; color: #2747c4; }
+.ab-tick { position: relative; display: inline-block; width: 0.8em; height: 0.8em; margin: 0 0.25em 0 0.5em; vertical-align: -0.08em; border: 1px solid #333; }
+.ab-tick.is-x::after { content: ""; position: absolute; inset: -0.22em; background: linear-gradient(45deg, transparent 44%, #2747c4 44% 56%, transparent 56%), linear-gradient(-45deg, transparent 44%, #2747c4 44% 56%, transparent 56%); }
+.ab-choice { position: relative; display: inline-block; margin-left: 0.3em; padding: 0.15em 0.3em 0.15em 0; }
+.ab-mark { display: grid; place-items: center; flex: none; width: 1.6em; height: 1.6em; margin-left: 0.8em; font-style: normal; border-radius: 50%; }
+.ab-mark svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.ab-mark.good { color: var(--ab-good); background: var(--ab-good-bg); }
+.ab-mark.bad { color: var(--ab-bad); background: var(--ab-bad-bg); font-weight: 800; font-family: var(--s-text); }
+.ab-given { font-family: var(--s-text); font-weight: 800; color: var(--ab-good); }
+.hi-result .ab-pts-open { display: none; }
+.ab-wrong { position: relative; display: inline-block; }
+.ab-wrong::after { content: ""; position: absolute; top: 50%; left: -0.2em; right: -0.2em; height: 2px; background: var(--ab-bad); transform: rotate(-14deg); }
+.ab-blank:has(.ab-fix) { position: relative; }
+.ab-fix { position: absolute; left: 50%; bottom: 72%; white-space: nowrap; transform: translateX(-30%) rotate(-6deg); font-family: "Times New Roman", Times, serif; font-size: 1.05em; font-style: italic; font-weight: 700; color: var(--ab-bad); }
+
+@media (prefers-reduced-motion: no-preference) {
+    html.tour-p-upload .hi-pdf {
+        animation: hi-drop 0.5s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    }
+
+    @keyframes hi-drop {
+        from { transform: scale(1.8) translateY(-14px); }
+        to { transform: none; }
+    }
+
+    .hi-wait i { animation: hi-dot 0.9s ease-in-out infinite; }
+    .hi-wait i:nth-child(2) { animation-delay: 0.15s; }
+    .hi-wait i:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes hi-dot {
+        0%, 100% { opacity: 0.25; }
+        50% { opacity: 1; }
+    }
+
+    html.tour-p-done .hi-result > * {
+        animation: hi-in 0.45s ease both;
+    }
+
+    html.tour-p-done .hi-result > :nth-child(2) { animation-delay: 0.2s; }
+
+    @keyframes hi-in {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: none; }
+    }
+}
+
+/* Phones: one column, the sheet larger, the result below it. */
+@media (max-width: 516px) {
+    .hi-body { padding: 22px 22px; }
+    .hi-result { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .ab-sheet { font-size: 13.5px; }
+    .ab-side { grid-template-columns: auto minmax(0, 1fr); gap: 10px 22px; align-items: center; padding-top: 0; }
+    .ab-side .ab-pill,
+    .ab-side .ab-meta { grid-column: 1 / -1; }
+    .ab-score { font-size: 42px; }
+}
+
+/* Phones: the preview is shown far larger there, so the materials scroll less. */
+@media (max-width: 516px) {
+    .fs-sheet {
+        --notes-y: -80px;
+    }
+
+    .tour-ws-in {
+        --ws-y: -150px;
+    }
+}

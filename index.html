@@ -1,208 +1,1988 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>open.tutor.new - Open Source Education Platform</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@100;200;300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
-    
-    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>openTutor – der offene KI-Tutor für Schulen</title>
+    <meta name="description" content="openTutor ist der offene KI-Tutor für Schulen: Jede Schülerin und jeder Schüler übt eins zu eins mit dem Material der Lehrperson. Open Source, kostenlos, gehostet in der Schweiz und der EU.">
+    <link rel="preload" href="/fonts/Castoro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/style.css?v=e0d635305e">
     <style>
-        /* Ensure container matches regular page width, but allow more width for header */
-.container {
-    max-width: 650px;
-}
+        .lead {
+            text-wrap: balance;
+        }
 
-.hero h1 {
-    max-width: 100%;
-}
+        /* Hover on a point: the disc swells a little and the glyph acts out its meaning
+           (brackets open, the tick redraws, the arrows swap). Off for reduced motion. */
+        .ic-tick { stroke-dasharray: 1; stroke-dashoffset: 0; }
 
-/* Page Specific Overrides */
-header {
-    text-align: left;
-    margin-bottom: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: normal;
-    opacity: 0.6;
-    border-bottom: none;
-    display: flex;
-    padding: 0;
-}
+        @media (prefers-reduced-motion: no-preference) {
+            .points .icon .tint,
+            .points .icon .ic-l,
+            .points .icon .ic-r,
+            .points .icon .ic-shield,
+            .points .icon .ic-top,
+            .points .icon .ic-bot {
+                transform-box: fill-box;
+                transform-origin: center;
+                transition: transform 0.4s cubic-bezier(0.3, 1.5, 0.5, 1);
+            }
 
-/* Hero Section */
-.hero {
-    text-align: left;
-    margin-bottom: 2rem;
-    margin-top: -1rem;
-}
+            .points li:hover .icon .tint { transform: scale(1.08); }
+            .points li:hover .ic-l { transform: translateX(-1.6px); }
+            .points li:hover .ic-r { transform: translateX(1.6px); }
+            .points li:hover .ic-shield { transform: scale(1.07); }
+            .points li:hover .ic-tick { animation: ic-draw 0.45s 0.05s ease-out both; }
+            .points li:hover .ic-top { transform: translateX(2.2px); }
+            .points li:hover .ic-bot { transform: translateX(-2.2px); }
 
-h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    line-height: 1.3;
-    font-weight: 100;
-    white-space: nowrap;
-}
+            @keyframes ic-draw {
+                from { stroke-dashoffset: 1; }
+                to { stroke-dashoffset: 0; }
+            }
+        }
 
-.highlight-box {
-    background-color: #cce5ff; /* Light blue highlight */
-    color: #0e3322;
-    padding: 0 6px;
-    border-radius: 4px;
-    box-shadow: 2px 2px 0px rgba(14, 51, 34, 0.2);
-    display: inline-block;
-    transform: rotate(-2deg);
-    margin: 0 2px;
-}
+        /* Icons: glyph centred on its disc, disc flush with the text edge; titles on one line. */
+        .points .icon {
+            margin-left: -8px;
+        }
 
-.brushstroke-underline {
-    position: relative;
-    display: inline-block;
-    padding-bottom: 2px;
-}
+        @media (min-width: 1000px) {
+            .points h2 {
+                white-space: nowrap;
+            }
+        }
 
-.brushstroke-underline::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: #e74c3c;
-    border-radius: 2px;
-    transform: rotate(-1.2deg) scaleX(1.1);
-    opacity: 0.9;
-}
+        @media (min-width: 761px) and (max-width: 999px) {
+            .points h2 {
+                font-size: 21px;
+            }
+        }
+        /* Idea "Keller": a schoolhouse cross-section. Four rooms with a small scene each hang on the one server
+           in a single green basement room; solid green lines rise inside the middle wall and the floor slabs. */
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 520fr) minmax(0, 480fr);
+            column-gap: 24px;
+            align-items: center;
+            margin-bottom: 64px;
+        }
+        .hero h1 { margin-bottom: 28px; font-size: clamp(34px, 4.2vw, 60px); text-wrap: wrap; }
+        .hero-copy p { max-width: 36em; margin: 0; font-size: 20px; }
+        .hero-visual { margin: 0; }
+        .hero-visual svg { display: block; width: 100%; height: auto; overflow: visible; }
 
-.brushstroke-underline::before {
-    content: '';
-    position: absolute;
-    bottom: 1px;
-    left: -2px;
-    width: calc(100% + 4px);
-    height: 2.5px;
-    background: #e74c3c;
-    border-radius: 1.5px;
-    transform: rotate(0.8deg) scaleX(1.15);
-    opacity: 0.5;
-}
+        .kl-ink, .kl-green, .kl-line { fill: none; stroke-width: 2.5; stroke-linecap: butt; stroke-linejoin: miter; }
+        .kl-ink { stroke: #111; stroke-linecap: square; }
+        .kl-green { stroke: #14a35a; }
+        .kl-line { stroke: #14a35a; stroke-width: 5; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+        .kl-round { stroke-linecap: round; stroke-linejoin: round; }
+        .kl-ground { stroke-width: 3.5; }
+        .kl-mark { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 
-.visual-placeholder {
-    width: 80%;
-    height: auto;
-    border: 3px solid var(--text-color);
-    border-radius: 15px;
-    display: block;
-    margin: 0 auto 3rem auto;
-    overflow: hidden;
-    box-shadow: 5px 5px 0px rgba(14, 51, 34, 0.2);
-    transform: rotate(-1deg);
-    background-color: white;
-}
+        /* The living hero: light runs along a cable whenever something goes to or comes from the
+           server; parts that move scale around their own box. The script below drives them. */
+        .kl-pulse path { fill: none; stroke-linecap: round; stroke-dasharray: 0 2; opacity: 0; }
+        .kl-bead { stroke: #14a35a; stroke-width: 12; }
+        .kl-core { stroke: #fff; stroke-width: 5.5; }
+        .lv-draw { stroke-dasharray: 1; }
+        .lv-o { transform-box: fill-box; transform-origin: center; }
+        .tl-bub { transform-box: fill-box; transform-origin: 19% 100%; }
+        .bl-page { transform-box: fill-box; transform-origin: 100% 100%; }
+        .br-bar { transform-box: fill-box; transform-origin: 50% 100%; }
+        .sv-bar { transform-box: fill-box; transform-origin: 0 50%; }
+        .tl-wave path { transform-box: fill-box; transform-origin: center; }
+        .tl-wave.talking path { animation: lv-wave 0.9s ease-in-out infinite; }
+        .tl-wave.talking path:nth-child(2) { animation-duration: 0.7s; animation-delay: -0.3s; }
+        .tl-wave.talking path:nth-child(3) { animation-duration: 1.1s; animation-delay: -0.5s; }
+        @keyframes lv-wave { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+        @media (max-width: 860px) { .kl-bead { stroke-width: 13; } .kl-core { stroke-width: 6; } }
 
-.visual-placeholder img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
+        @media (prefers-reduced-motion: no-preference) {
+            .kl-go .kl-line { animation: kl-rise 1s 0.15s cubic-bezier(0.45, 0, 0.3, 1) both; }
+            @keyframes kl-rise { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+        }
 
-.about-section {
-    margin-bottom: 4rem;
-    padding: 0;
-    margin-top: 2rem; /* Align to background line (2rem spacing) */
-}
+        @media (max-width: 860px) {
+            .hero { display: block; margin-bottom: 32px; }
+            .hero h1 { margin-bottom: 20px; }
+            .hero h1 br { display: none; }
+            .hero-visual { max-width: 420px; margin: 32px 0 0; }
+            .kl-ink, .kl-green { stroke-width: 3; }
+            .kl-line { stroke-width: 5.5; }
+            .kl-ground { stroke-width: 4; }
+        }
 
-.about-section h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    font-weight: 100;
-    color: var(--text-color);
-    line-height: 2rem; /* Match background line spacing */
-    margin-top: 0;
-}
+        /* Sections below the hero: heading in the left column, content on the right, one ink rule
+           above each. Every section carries one small room drawing that echoes the house. */
+        .sec-grid {
+            display: grid;
+            grid-template-columns: 250px minmax(0, 1fr);
+            gap: 0 48px;
+            padding: 24px 0 88px;
+            border-top: 1px solid var(--ink);
+        }
 
-.about-section p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #000000;
-    margin-bottom: 1.5rem;
-    font-weight: 300;
-}
+        .sec h2 {
+            margin: 0;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 26px;
+            line-height: 1.15;
+        }
 
-.about-section p:last-child {
-    margin-bottom: 0;
-}
+        .statement {
+            max-width: 21em;
+            margin: 0 0 40px;
+            font-family: var(--serif);
+            font-size: clamp(26px, 2.7vw, 36px);
+            line-height: 1.18;
+            letter-spacing: -0.01em;
+            text-wrap: balance;
+        }
 
-.about-section .smaller-text {
-    font-size: 0.95rem;
-    font-weight: 200;
-}
+        .sec-body {
+            display: grid;
+            grid-template-columns: 250px minmax(0, 1fr);
+            gap: 0 48px;
+            align-items: start;
+        }
 
-/* Responsive */
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.6rem;
-        white-space: normal;
-    }
-    .about-section h2 {
-        font-size: 1.3rem;
-        line-height: 1.8rem;
-    }
-    .about-section p {
-        font-size: 1rem;
-    }
-}
+        .vg {
+            margin: 0;
+        }
 
+        .vg svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            overflow: visible;
+        }
+
+        .vg-ink { fill: none; stroke: #111; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+        .vg-room { fill: #fff; stroke: #111; stroke-width: 2.5; }
+        .vg-cable { fill: none; stroke: #14a35a; stroke-width: 5; stroke-linejoin: round; }
+        .vg-mark { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        .facts {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border-top: 1px solid var(--rule);
+        }
+
+        .facts li {
+            padding: 14px 0 16px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .facts b {
+            display: block;
+            margin-bottom: 2px;
+            font-weight: 650;
+        }
+
+        .facts span,
+        .facts a {
+            font-size: 15px;
+        }
+
+        .facts span {
+            color: var(--muted);
+        }
+
+        .paths {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid var(--rule);
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .paths > div {
+            padding: 18px 28px 22px 0;
+        }
+
+        .paths > div + div {
+            padding-left: 28px;
+            border-left: 1px solid var(--rule);
+        }
+
+        .paths h3 {
+            margin: 0 0 10px;
+            font-size: 17px;
+            font-weight: 650;
+        }
+
+        .paths ol {
+            margin: 0 0 14px;
+            padding-left: 1.2em;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .paths li {
+            padding: 2px 0;
+        }
+
+        .colophon {
+            border-top: 3px solid var(--ink);
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .colophon .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 1.6rem;
+            padding-top: 18px;
+            padding-bottom: 44px;
+        }
+
+        .colophon p {
+            margin: 0 auto 0 0;
+        }
+
+        @media (max-width: 860px) {
+            .sec-grid {
+                grid-template-columns: 1fr;
+                padding-bottom: 64px;
+            }
+
+            .sec h2 {
+                margin-bottom: 18px;
+                font-size: 22px;
+                color: var(--muted);
+            }
+
+            .statement {
+                margin-bottom: 28px;
+            }
+
+            .sec-body {
+                grid-template-columns: 1fr;
+                gap: 28px 0;
+            }
+
+            .vg {
+                max-width: 250px;
+            }
+
+            .paths {
+                grid-template-columns: 1fr;
+            }
+
+            .paths > div + div {
+                padding-left: 0;
+                border-left: 0;
+                border-top: 1px solid var(--rule);
+            }
+        }
+
+        /* Guided view: three lines on the left, the visual of the active line on the right. */
+        .aud {
+            padding-bottom: 88px;
+        }
+
+        .tour {
+            display: grid;
+            grid-template-columns: minmax(0, 0.68fr) minmax(0, 1.32fr);
+            gap: 0 44px;
+            align-items: center;
+        }
+
+        .tour h2 {
+            margin: 0 0 22px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(32px, 3.4vw, 44px);
+            line-height: 1.05;
+            letter-spacing: -0.015em;
+            color: #2747c4;
+        }
+
+        .tour-steps {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .tour-step {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 12px 0 14px 18px;
+            font: inherit;
+            color: #8a8a8a;
+            text-align: left;
+            background: none;
+            border: 0;
+            border-left: 3px solid var(--rule);
+            cursor: pointer;
+            transition: color 0.25s;
+        }
+
+        .tour-step b {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 19px;
+            font-weight: 650;
+        }
+
+        .tour-step span {
+            display: block;
+            font-size: 15px;
+        }
+
+        .tour-step.is-active {
+            color: var(--ink);
+        }
+
+        .tour-step.is-active b {
+            color: #2747c4;
+        }
+
+        /* The active line's marker; while the view advances on its own it fills like a timer. */
+        .tour-step.is-active::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -3px;
+            width: 3px;
+            height: 100%;
+            background: #2747c4;
+            transform-origin: top;
+        }
+
+        .tour-step.is-timed::before {
+            animation: tour-fill var(--dur, 9s) linear both;
+        }
+
+        @keyframes tour-fill {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+
+        .tour-step:focus-visible {
+            outline: 2px solid #2747c4;
+            outline-offset: 2px;
+        }
+
+        .tour-stage {
+            padding: 20px;
+            background: #dde5ff;
+            transition: background-color 0.5s;
+        }
+
+        .tour-pupil .tour-stage[data-active="plan"] {
+            background: #d3efdf;
+        }
+
+        .tour-frame {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 9 / 5;
+            background: #fff;
+            border: 2px solid var(--ink);
+            border-radius: 10px;
+        }
+
+        .tour-pupil .tour-frame iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none;
+            transform-origin: 100% 0;
+            transition: transform 0.7s cubic-bezier(0.3, 0, 0.2, 1);
+        }
+
+        /* Materials and hand-in fill the frame with the notes side (68 % of the session). */
+        .tour-pupil .tour-stage[data-active="materials"] iframe,
+        .tour-pupil .tour-stage[data-active="plan"] iframe {
+            transform: scale(1.48);
+        }
+
+        @media (max-width: 860px) {
+            .aud {
+                padding-bottom: 64px;
+            }
+
+            .tour {
+                grid-template-columns: 1fr;
+                gap: 24px 0;
+            }
+
+            .tour-stage {
+                padding: 12px;
+            }
+        }
+
+        /* On phones the whole session would be too small to read, so line 1 shows the chat half
+           and lines 2 and 3 the notes half. The preview keeps its original 42 / 58 split there
+           (see session-preview/tour.css). */
+        @media (max-width: 600px) {
+            .tour-frame {
+                aspect-ratio: 10 / 9;
+            }
+
+            .tour-pupil .tour-frame iframe {
+                top: auto;
+                bottom: 0;
+                height: auto;
+                aspect-ratio: 9 / 5;
+                transform-origin: 0 100%;
+                transform: scale(2.2);
+                transition: none;
+            }
+
+            .tour-pupil .tour-stage[data-active="materials"] iframe,
+            .tour-pupil .tour-stage[data-active="plan"] iframe {
+                top: 0;
+                bottom: auto;
+                transform-origin: 100% 0;
+                transform: scale(1.72);
+            }
+        }
+
+        /* Teacher view: the same guided format in orange, with the teacher preview filling the
+           frame (it scales and, on narrow frames, crops itself). */
+        .tour-teacher h2,
+        .tour-teacher .tour-step.is-active b {
+            color: #c4521f;
+        }
+
+        .tour-teacher .tour-step.is-active::before {
+            background: #c4521f;
+        }
+
+        .tour-teacher .tour-step:focus-visible {
+            outline-color: #c4521f;
+        }
+
+        .tour-teacher .tour-stage {
+            background: #fde0cd;
+        }
+
+        .tour-teacher .tour-stage[data-active="progress"] {
+            background: #d3efdf;
+        }
+
+        .tour-teacher .tour-frame iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none;
+        }
+
+        /* Anpassen and Betrieb: a heading row, then two or three things side by side. */
+        .side-by-side {
+            padding-bottom: 88px;
+        }
+
+        .sbs-head {
+            display: grid;
+            grid-template-columns: minmax(0, 0.68fr) minmax(0, 1.32fr);
+            gap: 0 44px;
+            align-items: baseline;
+            margin-bottom: 26px;
+        }
+
+        .sbs-head h2 {
+            margin: 0;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(32px, 3.4vw, 44px);
+            line-height: 1.05;
+            letter-spacing: -0.015em;
+        }
+
+        .sbs-head p {
+            max-width: 32em;
+            margin: 0;
+            font-size: 19px;
+        }
+
+        #anpassen .sbs-head h2 { color: #12734a; }
+        #betrieb .sbs-head h2 { color: var(--ink); }
+
+        /* Three cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .card-vis {
+            display: grid;
+            place-items: center;
+            height: 220px;
+            margin-bottom: 18px;
+            padding: 18px;
+            background: #d3efdf;
+        }
+
+        .card h3 {
+            margin: 0 0 6px;
+            font-size: 19px;
+            font-weight: 650;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .sbs-foot {
+            margin: 26px 0 0;
+            padding-top: 16px;
+            font-size: 15px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .sbs-foot b {
+            font-weight: 650;
+        }
+
+        /* Card 1: app tiles */
+        .apps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+
+        .app {
+            display: grid;
+            justify-items: center;
+            gap: 6px;
+            padding: 10px 4px 9px;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.15;
+            text-align: center;
+            background: #fff;
+            border-radius: 12px;
+        }
+
+        .app i {
+            display: grid;
+            place-items: center;
+            width: 34px;
+            height: 34px;
+            color: #fff;
+            border-radius: 10px;
+        }
+
+        .app svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Card 2: "Erledigt, wenn du:" */
+        .cond {
+            width: 100%;
+            padding: 14px 16px 8px;
+            font-size: 13.5px;
+            background: #fff;
+            border-radius: 12px;
+        }
+
+        .cond b {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: 650;
+            color: var(--muted);
+        }
+
+        .cond ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .cond li {
+            display: grid;
+            grid-template-columns: 18px minmax(0, 1fr);
+            gap: 9px;
+            align-items: center;
+            padding: 8px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .cond .box {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #b8c1cb;
+            border-radius: 5px;
+        }
+
+        .cond .box.on {
+            background: #12734a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 13px no-repeat;
+            border-color: #12734a;
+        }
+
+        .cond em {
+            font-style: normal;
+            font-weight: 650;
+        }
+
+        /* Card 3: one prompt, a sheet for each pupil */
+        .prompt {
+            display: grid;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .prompt-box {
+            padding: 10px 12px;
+            font-size: 12.5px;
+            line-height: 1.4;
+            background: #fff;
+            border-radius: 10px;
+        }
+
+        .prompt-box b {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 11px;
+            font-weight: 650;
+            color: var(--muted);
+        }
+
+        .sheets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .sheet {
+            display: grid;
+            gap: 4px;
+            padding: 8px 9px 9px;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        .sheet i {
+            display: block;
+            height: 4px;
+            background: #e2e2e2;
+            border-radius: 2px;
+        }
+
+        .sheet i:first-child {
+            width: 60%;
+            height: 5px;
+            background: var(--c);
+        }
+
+        .sheet i:nth-child(3) { width: 80%; }
+        .sheet i:nth-child(4) { width: 70%; }
+
+        .sheet span {
+            margin-top: 3px;
+            font-size: 11.5px;
+            font-weight: 650;
+        }
+
+        /* Betrieb: two columns with matching rows */
+        .ops {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .ops-col {
+            display: flex;
+            flex-direction: column;
+            padding: 24px 26px 22px;
+        }
+
+        .ops-hosted {
+            background: #fde0cd;
+        }
+
+        .ops-self {
+            border: 1px dashed var(--ink);
+        }
+
+        .ops-col h3 {
+            margin: 0 0 4px;
+            font-family: var(--serif);
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        .ops-price {
+            margin: 6px 0 2px;
+            font-family: var(--serif);
+            font-size: 38px;
+            line-height: 1;
+        }
+
+        .ops-sub {
+            margin: 0 0 14px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .ops-col dl {
+            margin: 0 0 18px;
+        }
+
+        .ops-col dl div {
+            display: grid;
+            grid-template-columns: 112px minmax(0, 1fr);
+            gap: 0 14px;
+            padding: 8px 0;
+            font-size: 15px;
+            border-top: 1px solid rgba(17, 17, 17, 0.14);
+        }
+
+        .ops-col dt {
+            font-weight: 650;
+        }
+
+        .ops-col dd {
+            margin: 0;
+        }
+
+        .ops-col > a {
+            margin-top: auto;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .data {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-top: 20px;
+            background: #d3efdf;
+        }
+
+        .data div {
+            padding: 16px 18px 18px;
+        }
+
+        .data div + div {
+            border-left: 1px solid rgba(18, 115, 74, 0.25);
+        }
+
+        .data b {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 15px;
+            font-weight: 650;
+            color: #0e5a3a;
+        }
+
+        .data span {
+            font-size: 14px;
+        }
+
+        @media (max-width: 860px) {
+            .side-by-side {
+                padding-bottom: 64px;
+            }
+
+            .sbs-head {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .cards,
+            .ops {
+                grid-template-columns: 1fr;
+            }
+
+            .data {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .data div:nth-child(3) {
+                border-left: 0;
+            }
+
+            .data div:nth-child(n + 3) {
+                border-top: 1px solid rgba(18, 115, 74, 0.25);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ops-col dl div {
+                grid-template-columns: 1fr;
+            }
+
+            .data {
+                grid-template-columns: 1fr;
+            }
+
+            .data div + div {
+                border-left: 0;
+                border-top: 1px solid rgba(18, 115, 74, 0.25);
+            }
+        }
+
+        /* Clearer separation between the main sections: an ink rule and more room. */
+        .aud > .wrap,
+        .side-by-side > .wrap {
+            padding-top: 60px;
+            background: linear-gradient(var(--ink), var(--ink)) 28px 0 / calc(100% - 56px) 1px no-repeat;
+        }
+
+        .aud,
+        .side-by-side {
+            padding-bottom: 104px;
+        }
+
+        /* Anpassen: two panels side by side, a picture on top and two lines below. */
+        .two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .two-vis {
+            display: grid;
+            place-items: center;
+            height: 250px;
+            margin-bottom: 20px;
+            padding: 22px;
+            background: #d3efdf;
+        }
+
+        .two h3 {
+            margin: 0 0 6px;
+            font-size: 21px;
+            font-weight: 650;
+        }
+
+        .two p {
+            max-width: none;
+            margin: 0;
+            font-size: 16px;
+            color: var(--muted);
+        }
+
+        /* Picture 1: a home-made mini app handed out to a class, with its scores. */
+        .mini {
+            display: grid;
+            grid-template-columns: 150px minmax(0, 1fr);
+            gap: 16px;
+            align-items: center;
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .mini-app {
+            display: grid;
+            justify-items: center;
+            gap: 8px;
+            padding: 18px 12px 14px;
+            text-align: center;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(14, 51, 34, 0.1);
+        }
+
+        .mini-app i {
+            display: grid;
+            place-items: center;
+            width: 54px;
+            height: 54px;
+            font-style: normal;
+            font-size: 26px;
+            background: #fde0cd;
+            border-radius: 14px;
+        }
+
+        .mini-app b {
+            font-size: 14px;
+            font-weight: 650;
+            line-height: 1.2;
+        }
+
+        .mini-app span {
+            font-size: 11.5px;
+            color: var(--muted);
+        }
+
+        .mini-tag {
+            padding: 3px 9px;
+            font-size: 11px;
+            font-weight: 650;
+            color: #12734a;
+            background: #d3efdf;
+            border-radius: 999px;
+        }
+
+        .scores {
+            padding: 12px 14px;
+            font-size: 13px;
+            background: #fff;
+            border-radius: 12px;
+        }
+
+        .scores b {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 11.5px;
+            font-weight: 650;
+            color: var(--muted);
+        }
+
+        .scores div {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .scores em {
+            font-style: normal;
+            font-weight: 650;
+        }
+
+        /* Picture 2: a short piece of the school's own configuration. */
+        .code {
+            width: 100%;
+            max-width: 430px;
+            padding: 16px 18px;
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.65;
+            color: #e8eef0;
+            background: #14241c;
+            border-radius: 12px;
+        }
+
+        .code .f { color: #8fa79a; }
+        .code .k { color: #9ad7b4; }
+        .code .v { color: #f4b892; }
+        .code .add { display: block; margin: 0 -18px; padding: 0 18px; background: rgba(154, 215, 180, 0.12); }
+
+        /* Betrieb: two columns, each with a picture, three short facts and its button. */
+        .hosting {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .host {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 26px 28px 28px;
+        }
+
+        .host-us { background: #fde0cd; }
+        .host-self { background: #fff; border: 1.5px solid var(--ink); }
+
+        .host-top {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .host-top svg {
+            flex: none;
+            width: 64px;
+            height: 64px;
+        }
+
+        .host h3 {
+            margin: 0;
+            font-family: var(--serif);
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        .host-price {
+            margin: 2px 0 0;
+            font-size: 15px;
+            font-weight: 650;
+        }
+
+        .host ul {
+            display: grid;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-size: 16px;
+        }
+
+        .host li {
+            display: grid;
+            grid-template-columns: 20px minmax(0, 1fr);
+            gap: 10px;
+        }
+
+        .host li::before {
+            content: "";
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            background: #12734a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 13px no-repeat;
+            border-radius: 50%;
+        }
+
+        .btn {
+            align-self: flex-start;
+            margin-top: auto;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 650;
+            text-decoration: none;
+            border: 1.5px solid var(--ink);
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: var(--ink);
+        }
+
+        .btn:hover {
+            text-decoration: none;
+            color: #fff;
+            background: #2747c4;
+            border-color: #2747c4;
+        }
+
+        .host-note {
+            margin: 18px 0 0;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 860px) {
+            .aud > .wrap,
+            .side-by-side > .wrap {
+                padding-top: 44px;
+            }
+
+            .aud,
+            .side-by-side {
+                padding-bottom: 72px;
+            }
+
+            .two,
+            .hosting {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mini {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .two-vis {
+                height: auto;
+                padding: 16px;
+            }
+
+            .code {
+                font-size: 11.5px;
+            }
+
+            .host {
+                padding: 22px 20px 24px;
+            }
+
+            .host-top svg {
+                width: 44px;
+                height: 44px;
+            }
+
+            .host h3 {
+                font-size: 23px;
+            }
+        }
+
+        /* The hero's points already end on an ink rule: the first section adds none. */
+        #schueler > .wrap {
+            padding-top: 24px;
+            background: none;
+        }
+
+        /* Datenschutz-Steckbrief: ruled rows in two columns, term and value. */
+        .sheet-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 40px;
+            margin: 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        .sheet-grid div {
+            display: grid;
+            grid-template-columns: 156px minmax(0, 1fr);
+            gap: 0 16px;
+            padding: 13px 0 14px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .sheet-grid dt {
+            font-weight: 650;
+        }
+
+        .sheet-grid dd {
+            margin: 0;
+        }
+
+        .sheet-grid dd span {
+            display: block;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .sheet-foot {
+            margin: 18px 0 0;
+            font-size: 15px;
+        }
+
+        /* FAQ: questions and short answers in two columns. */
+        .faq {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px 48px;
+            margin: 0;
+        }
+
+        .faq div {
+            padding-top: 14px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .faq dt {
+            margin-bottom: 6px;
+            font-family: var(--serif);
+            font-size: 21px;
+            line-height: 1.25;
+        }
+
+        .faq a {
+            white-space: nowrap;
+        }
+
+        .faq dd {
+            margin: 0;
+            font-size: 16px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 860px) {
+            .sheet-grid,
+            .faq {
+                grid-template-columns: 1fr;
+            }
+
+            .faq {
+                gap: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .host ul {
+                font-size: 15px;
+            }
+
+            .sheet-grid div {
+                grid-template-columns: 1fr;
+                gap: 2px;
+            }
+        }
     </style>
-    
 </head>
 <body>
 
-    <div class="container">
-        
+<header class="masthead">
+    <div class="wrap">
+        <a class="wordmark" href="/">openTutor</a>
+        <nav aria-label="Links">
+            <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+            <a href="mailto:friedrich@tutor.new">Kontakt</a>
+        </nav>
+    </div>
+</header>
 
-        
-        
-<section class="hero">
-    <h1>OpenTutor powers <span class="highlight-box">1:1 learning</span> for <span class="brushstroke-underline">everyone</span></h1>
-</section>
+<main>
+    <section class="opening">
+        <div class="wrap">
+            <div class="hero">
+                <div class="hero-copy">
+                    <h1>Das <br>KI&#8209;Betriebs&shy;system für Schulen.</h1>
+                    <p class="lead">Ein eigener Tutor für jedes Kind, mit Ihrem Material.</p>
+                </div>
+                <figure class="hero-visual">
+<svg viewBox="22 36 456 368" role="img" aria-label="Schnitt durch ein Haus mit vier Schulzimmern: ein Tablet, auf dem der Tutor zurückfragt, ein Quiz an der Wand, ein Arbeitsblatt mit Lernkarten und der Bildschirm der Lehrperson mit dem Stand der Klasse. Im Keller darunter steht ein einzelner Server, von dem grüne Leitungen in jedes der vier Zimmer führen.">
+<rect x="70" y="120" width="360" height="198" fill="#fff"/>
+<rect x="185" y="318" width="130" height="72" fill="#d3efdf"/>
+<path class="kl-green" d="M185 318V390H315V318"/>
+<g class="kl-ink">
+<path class="kl-round" d="M50 127L250 46L450 127"/>
+<path d="M70 120H430M70 120V318M430 120V318M70 219H166M334 219H430M250 120V219"/>
+</g>
+<path class="kl-ink kl-ground" d="M26 318H166M334 318H474"/>
+<rect x="222" y="332" width="56" height="49" rx="3" fill="#12734a"/>
+<path d="M222 348.5H278M222 364.5H278" stroke="#d3efdf" stroke-width="2.5"/>
+<g fill="#fff"><circle class="sv-led" cx="232" cy="340" r="2.4"/><circle class="sv-led" cx="232" cy="356.5" r="2.4"/><circle class="sv-led" cx="232" cy="373" r="2.4"/></g>
+<g stroke="#fff" stroke-width="2" stroke-linecap="round"><path class="sv-bar" d="M254 340H268"/><path class="sv-bar" d="M254 356.5H268"/><path class="sv-bar" d="M254 373H268"/></g>
+<path class="kl-line" pathLength="1" d="M250 332V219H157V190"/><path class="kl-line" pathLength="1" d="M250 332V219H343V192"/><path class="kl-line" pathLength="1" d="M250 332V318H157V296"/><path class="kl-line" pathLength="1" d="M250 332V318H343V296"/>
+<g aria-hidden="true"><g class="kl-pulse" data-room="tl"><path class="kl-bead" pathLength="1" d="M250 332V219H157V190"/><path class="kl-core" pathLength="1" d="M250 332V219H157V190"/></g><g class="kl-pulse" data-room="tr"><path class="kl-bead" pathLength="1" d="M250 332V219H343V192"/><path class="kl-core" pathLength="1" d="M250 332V219H343V192"/></g><g class="kl-pulse" data-room="bl"><path class="kl-bead" pathLength="1" d="M250 332V318H157V296"/><path class="kl-core" pathLength="1" d="M250 332V318H157V296"/></g><g class="kl-pulse" data-room="br"><path class="kl-bead" pathLength="1" d="M250 332V318H343V296"/><path class="kl-core" pathLength="1" d="M250 332V318H343V296"/></g></g>
+<g>
+<path class="kl-ink kl-round" d="M113 190H201M121 190V219M193 190V216.5"/>
+<rect class="kl-ink kl-round" x="124" y="146" width="36" height="44" rx="4" style="fill:#fff"/>
+<g fill="none" stroke="#2747c4" stroke-width="3" stroke-linecap="round"><path class="tl-line lv-draw" pathLength="1" d="M131 158H153" style="stroke-dashoffset:1"/><path class="tl-line lv-draw" pathLength="1" d="M131 166H148" style="stroke-dashoffset:1"/><path class="tl-line lv-draw" pathLength="1" d="M131 174H151" style="stroke-dashoffset:1"/></g>
+<g class="tl-graph" style="opacity:0"><path class="tl-curve lv-draw" pathLength="1" d="M129 154Q140 196 151 154" fill="none" stroke="#2747c4" stroke-width="2.6" stroke-linecap="round" style="stroke-dashoffset:1"/><circle class="tl-vertex lv-o" cx="140" cy="175" r="2.8" fill="#c4521f" style="transform:scale(0)"/></g>
+<g class="tl-bub">
+<path d="M162 130H192a6 6 0 0 1 6 6V156a6 6 0 0 1-6 6H174L164 172V162H162a6 6 0 0 1-6-6V136a6 6 0 0 1 6-6Z" fill="#2747c4"/>
+<g class="tl-q"><path class="kl-mark" stroke="#fff" stroke-width="3" d="M172.5 142.5a4.5 4.5 0 1 1 6.6 4c-1.5.9-2.1 1.7-2.1 3.3"/><circle cx="177" cy="155" r="1.9" fill="#fff"/></g>
+<g class="tl-wave" style="opacity:0" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M169 142V150"/><path d="M177 139V153"/><path d="M185 142V150"/></g>
+<path class="tl-ok kl-mark" stroke="#fff" stroke-width="3" d="M170 146.5l4.5 4.5 9-9.5" style="opacity:0"/>
+</g>
+</g>
+<g>
+<rect class="kl-ink kl-round" x="297" y="134" width="92" height="58" rx="3" style="fill:#fff"/>
+<g class="tr-quiz lv-o"><path class="kl-mark tr-title lv-draw" pathLength="1" stroke="#111" stroke-width="3" d="M308 146H348"/><g class="tr-tile"><rect class="tr-box" x="307" y="154" width="34" height="13" rx="2" style="fill:#fde0cd"/><path class="kl-mark tr-tick lv-draw" pathLength="1" stroke="#fff" stroke-width="2.4" d="M319.5 160.5l3 3 6-6.5" style="stroke-dashoffset:1"/></g><g class="tr-tile"><rect class="tr-box" x="345" y="154" width="34" height="13" rx="2" style="fill:#c4521f"/><path class="kl-mark tr-tick lv-draw" pathLength="1" stroke="#fff" stroke-width="2.4" d="M357.5 160.5l3 3 6-6.5" style="stroke-dashoffset:0"/></g><g class="tr-tile"><rect class="tr-box" x="307" y="171" width="34" height="13" rx="2" style="fill:#fde0cd"/><path class="kl-mark tr-tick lv-draw" pathLength="1" stroke="#fff" stroke-width="2.4" d="M319.5 177.5l3 3 6-6.5" style="stroke-dashoffset:1"/></g><g class="tr-tile"><rect class="tr-box" x="345" y="171" width="34" height="13" rx="2" style="fill:#fde0cd"/><path class="kl-mark tr-tick lv-draw" pathLength="1" stroke="#fff" stroke-width="2.4" d="M357.5 177.5l3 3 6-6.5" style="stroke-dashoffset:1"/></g></g>
+<g class="tr-mem lv-o" style="transform:scaleX(0)"><g class="mt lv-o" data-cx="311.5" data-cy="151.5"><rect x="303.75" y="142.75" width="15.5" height="17.5" rx="2" stroke-width="1.5" style="fill:#fde0cd;stroke:#fde0cd"/><path class="mt-sym" style="opacity:0"/></g><g class="mt lv-o" data-cx="332.5" data-cy="151.5"><rect x="324.75" y="142.75" width="15.5" height="17.5" rx="2" stroke-width="1.5" style="fill:#fde0cd;stroke:#fde0cd"/><path class="mt-sym" style="opacity:0"/></g><g class="mt lv-o" data-cx="353.5" data-cy="151.5"><rect x="345.75" y="142.75" width="15.5" height="17.5" rx="2" stroke-width="1.5" style="fill:#fde0cd;stroke:#fde0cd"/><path class="mt-sym" style="opacity:0"/></g><g class="mt lv-o" data-cx="374.5" data-cy="151.5"><rect x="366.75" y="142.75" width="15.5" height="17.5" rx="2" stroke-width="1.5" style="fill:#fde0cd;stroke:#fde0cd"/><path class="mt-sym" style="opacity:0"/></g><g class="mt lv-o" data-cx="311.5" data-cy="174.5"><rect x="303.75" y="165.75" width="15.5" height="17.5" rx="2" stroke-width="1.5" style="fill:#fde0cd;stroke:#fde0cd"/><path class="mt-sym" style="opacity:0"/></g><g class="mt lv-o" data-cx="332.5" data-cy="174.5"><rect x="324.75" y="165.75" width="15.5" height="17.5" rx="2" stroke-width="1.5" style="fill:#fde0cd;stroke:#fde0cd"/><path class="mt-sym" style="opacity:0"/></g><g class="mt lv-o" data-cx="353.5" data-cy="174.5"><rect x="345.75" y="165.75" width="15.5" height="17.5" rx="2" stroke-width="1.5" style="fill:#fde0cd;stroke:#fde0cd"/><path class="mt-sym" style="opacity:0"/></g><g class="mt lv-o" data-cx="374.5" data-cy="174.5"><rect x="366.75" y="165.75" width="15.5" height="17.5" rx="2" stroke-width="1.5" style="fill:#fde0cd;stroke:#fde0cd"/><path class="mt-sym" style="opacity:0"/></g></g>
+</g>
+<g>
+<path class="kl-ink kl-round" d="M113 296H201M121 296V318M193 296V315.5"/>
+<g class="bl-page">
+<path class="kl-ink kl-round" d="M120 250H143L153 260V296H120Z" style="fill:#fff"/><path class="kl-ink kl-round" d="M143 250V260H153"/>
+<g fill="none" stroke="#2747c4" stroke-width="3" stroke-linecap="round"><path class="bl-line lv-draw" pathLength="1" d="M128 270H145"/><path class="bl-line lv-draw" pathLength="1" d="M128 278H145"/><path class="bl-line lv-draw" pathLength="1" d="M128 286H138"/></g>
+</g>
+<rect class="kl-ink kl-round" x="170" y="262" width="30" height="22" rx="3" style="fill:#c4521f"/>
+<rect class="kl-ink kl-round" x="165" y="268" width="30" height="22" rx="3" style="fill:#fde0cd"/>
+<g class="bl-card lv-o">
+<rect class="kl-ink kl-round" x="160" y="274" width="30" height="22" rx="3" style="fill:#fff"/>
+<path class="kl-mark bl-front" stroke="#c4521f" stroke-width="3" d="M168 285H182"/>
+<path class="kl-mark bl-back" stroke="#2747c4" stroke-width="3" d="M167 282H183M167 288H177" style="opacity:0"/>
+</g>
+</g>
+<g>
+<path class="kl-ink kl-round" d="M297 296H389M305 296V315.5M381 296V318M333 296H353M343 284V296"/>
+<rect class="kl-ink kl-round" x="309" y="240" width="68" height="44" rx="3" style="fill:#fff"/>
+<rect class="br-sq" x="318.75" y="251.75" width="7.5" height="7.5" stroke-width="1.5" style="fill:#2747c4;stroke:#2747c4"/><rect class="br-sq" x="330.75" y="251.75" width="7.5" height="7.5" stroke-width="1.5" style="fill:#c4521f;stroke:#c4521f"/><rect class="br-sq" x="318.75" y="263.75" width="7.5" height="7.5" stroke-width="1.5" style="fill:#fff;stroke:#111"/><rect class="br-sq" x="330.75" y="263.75" width="7.5" height="7.5" stroke-width="1.5" style="fill:#12734a;stroke:#12734a"/>
+<g fill="#12734a"><rect class="br-bar" x="347" y="251" width="6" height="21" style="transform:scaleY(0.476)"/><rect class="br-bar" x="356" y="251" width="6" height="21" style="transform:scaleY(1.000)"/><rect class="br-bar" x="365" y="251" width="6" height="21" style="transform:scaleY(0.714)"/></g>
+</g>
+</svg>
+                </figure>
+            </div>
 
-<div class="visual-placeholder" style="margin-bottom: 1.5rem;">
-    <img src="/lesson_physics.png" alt="Example of a learning unit with notes">
-</div>
+            <ul class="points">
+                <li>
+                    <svg class="icon icon-open" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path class="ic-l" d="M8 7l-5 5 5 5"/><path class="ic-r" d="M16 7l5 5-5 5"/><path class="ic-slash" d="M13.5 4.5l-3 15"/></g></svg>
+                    <h2>Kostenlos &amp; Open Source</h2>
+                    <p>Der Quellcode ist öffentlich. Selbst betrieben kostet openTutor nichts, bei uns gehostet zahlen Sie nur die KI-Nutzung.</p>
+                </li>
+                <li>
+                    <svg class="icon icon-safe" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path class="ic-shield" d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path class="ic-tick" pathLength="1" d="M8.8 12.2l2.2 2.2 4.3-4.6"/></g></svg>
+                    <h2>Privat &amp; sicher</h2>
+                    <p>Server in der Schweiz und der EU, nach DSG und DSGVO. Die Daten Ihrer Klassen trainieren keine KI-Modelle. <a href="/datenschutz.html">Zum Datenschutz-Steckbrief</a></p>
+                </li>
+                <li>
+                    <svg class="icon icon-free" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path class="ic-top" d="M4 8.5h15M15.5 5l3.5 3.5-3.5 3.5"/><path class="ic-bot" d="M20 15.5H5M8.5 12L5 15.5 8.5 19"/></g></svg>
+                    <h2>Unabhängig</h2>
+                    <p>openTutor läuft mit KI-Modellen verschiedener Anbieter. Ihre Schule ist an keinen gebunden, auch nicht an uns.</p>
+                </li>
+            </ul>
+        </div>
+    </section>
 
-<section class="about-section">
-    <p>
-        OpenTutor is an open-source AI tutor for 1:1 learning.<br>
-        <span class="smaller-text">The best way to learn has always been individual instruction. Now we have the technology to make it scale.
-        OpenTutor gives anyone access to a personalized tutor, and makes the entire system open, inspectable, and modifiable. Every line of code is public.
-        You can run it yourself, adapt it to your needs, and share your improvements.<br>
-        OpenTutor is built by teachers and learners around the world, coordinated in Switzerland.</span>
-    </p>
-</section>
+    <section class="aud" id="schueler">
+        <div class="wrap">
+            <div class="tour tour-pupil" data-tour>
+                <div>
+                    <h2>Die Schülersicht</h2>
+                    <ol class="tour-steps">
+                        <li><button class="tour-step is-active" type="button" data-step="call" data-dur="9000" aria-pressed="true"><b>Im Gespräch mit dem Tutor</b><span>Sprechen, schreiben oder zeichnen: Der Tutor fragt zurück, statt die Lösung zu sagen.</span></button></li>
+                        <li><button class="tour-step" type="button" data-step="materials" data-dur="11500" style="--dur: 11.5s" aria-pressed="false"><b>Mitschriften und Materialien</b><span>Alles an einem Ort: die Mitschrift aus dem Gespräch, Arbeitsblätter der Lehrperson und eigene Unterlagen.</span></button></li>
+                        <li><button class="tour-step" type="button" data-step="plan" data-dur="11500" style="--dur: 11.5s" aria-pressed="false"><b>Abgeben und Feedback bekommen</b><span>Eine Aufgabe abgeben, und kurz darauf steht da, was gelungen ist und was noch fehlt.</span></button></li>
+                    </ol>
+                </div>
+                <div class="tour-stage" data-active="call" data-material="notes" data-phase="ready">
+                    <div class="tour-frame">
+                        <iframe src="/session-preview/index.html?v=1ce865bb6f19ee39da27" title="Vorschau einer Übungsstunde: links der Chat mit Tutorin Maya, rechts die Mitschrift, ein Arbeitsblatt der Lehrperson und eine abgegebene Aufgabe mit Bewertung." loading="lazy" tabindex="-1"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <template id="tour-tabs"><span data-tour-tab="sheet"><svg viewBox="0 0 24 24"><path d="M7 3.5h7l4 4v13H7zM14 3.5v4h4M10 12h5M10 15.5h5"/></svg>Arbeitsblatt</span></template>
+    <template id="tour-panes">
+        <div class="tour-ws"><div class="tour-ws-in">
+            <p class="ws-title">Quadratische Funktionen – Üben</p>
+            <p class="ws-sub">Scheitelform: <span class="ws-math">f(x) = a · (x − x<sub>S</sub>)² + y<sub>S</sub></span> mit Scheitelpunkt <span class="ws-math">S(x<sub>S</sub> | y<sub>S</sub>)</span>.</p>
+            <div class="ws-task" style="--c: #e0962a">
+                <span class="ws-no">01</span>
+                <div><b>Wertetabelle:</b><p>Vervollständige die Wertetabelle für <span class="ws-math">f(x) = x² − 2</span>.</p></div>
+                <span class="ws-pts">___ / 3 P.</span>
+            </div>
+            <table class="ws-table">
+                <tr><td class="ws-math">x</td><td>−3</td><td>−2</td><td>−1</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+                <tr><td class="ws-math">f(x)</td><td><span class="ws-hand" style="--d: 0.5s">7</span></td><td><span class="ws-hand" style="--d: 0.9s">2</span></td><td><span class="ws-hand" style="--d: 1.3s">−1</span></td><td></td><td></td><td></td><td></td></tr>
+            </table>
+            <hr class="ws-rule">
+            <div class="ws-task" style="--c: #d0473a">
+                <span class="ws-no">02</span>
+                <div><b>Scheitelform lesen:</b><p>Gib den Scheitelpunkt an und kreuze an, ob die Parabel nach oben oder unten geöffnet ist.</p></div>
+                <span class="ws-pts">___ / 6 P.</span>
+            </div>
+            <p class="ws-line"><b>a)</b> <span class="ws-math">f(x) = (x − 3)² + 1</span> — S( <span class="ws-blank"><span class="ws-hand" style="--d: 2.1s">3</span></span> | <span class="ws-blank"><span class="ws-hand" style="--d: 2.5s">1</span></span> ) — <span class="ws-box"></span>oben <span class="ws-box"></span>unten</p>
+            <p class="ws-line"><b>b)</b> <span class="ws-math">g(x) = −(x + 2)² + 4</span> — S( <span class="ws-blank">&nbsp;</span> | <span class="ws-blank">&nbsp;</span> ) — <span class="ws-box"></span>oben <span class="ws-box"></span>unten</p>
+            <p class="ws-line"><b>c)</b> <span class="ws-math">h(x) = 2x² − 5</span> — S( <span class="ws-blank">&nbsp;</span> | <span class="ws-blank">&nbsp;</span> ) — <span class="ws-box"></span>oben <span class="ws-box"></span>unten</p>
+            <hr class="ws-rule">
+            <div class="ws-task" style="--c: #3f6fd8">
+                <span class="ws-no">03</span>
+                <div><b>Graph ablesen:</b><p>Beide Parabeln sind verschobene Normalparabeln (<span class="ws-math">a = 1</span> oder <span class="ws-math">a = −1</span>). Lies den Scheitelpunkt ab und gib die Funktionsgleichung an.</p></div>
+                <span class="ws-pts">___ / 4 P.</span>
+            </div>
+            <svg class="ws-graph" viewBox="0 0 280 200" aria-hidden="true"><path d="M20 0V200M40 0V200M60 0V200M80 0V200M100 0V200M120 0V200M140 0V200M160 0V200M180 0V200M200 0V200M220 0V200M240 0V200M260 0V200M0 20H280M0 40H280M0 60H280M0 80H280M0 100H280M0 120H280M0 140H280M0 160H280M0 180H280" stroke="#e3e3e3" stroke-width="1" fill="none"/><path d="M0 100H280M140 0V200" stroke="#333" stroke-width="1.2" fill="none"/><path d="M100 0Q160 360 220 0" stroke="#111" stroke-width="1.6" fill="none"/><path d="M40 220Q100 -140 160 220" stroke="#111" stroke-width="1.6" stroke-dasharray="4 3" fill="none"/><text x="216" y="28" font-size="11" font-family="Times New Roman, serif" font-style="italic">p₁</text><text x="56" y="168" font-size="11" font-family="Times New Roman, serif" font-style="italic">p₂</text></svg>
+            <p class="ws-line"><span class="ws-math">p₁</span>: S( <span class="ws-blank"><span class="ws-hand" style="--d: 5.4s">1</span></span> | <span class="ws-blank"><span class="ws-hand" style="--d: 5.8s">−4</span></span> ) — <span class="ws-math">p₁(x) =</span> <span class="ws-blank ws-blank-long">&nbsp;</span></p>
+            <p class="ws-line"><span class="ws-math">p₂</span>: S( <span class="ws-blank">&nbsp;</span> | <span class="ws-blank">&nbsp;</span> ) — <span class="ws-math">p₂(x) =</span> <span class="ws-blank ws-blank-long">&nbsp;</span></p>
+        </div></div>
+        <div class="tour-plan">
+            <div class="hi-bar"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><b>Abgabe</b><span>Aufgabe 02 · Scheitelform lesen</span></div>
+            <div class="hi-body">
+                <div class="hi-form">
+                    <p class="hi-label">Dateien für die Abgabe</p>
+                    <div class="hi-file"><span class="hi-pdf">PDF</span><span class="hi-name"><b>Arbeitsblatt_Aufgabe-02.pdf</b><span class="hi-status"><span class="up">Wird hochgeladen …</span><span class="ok">✓ Hochgeladen · 1,2 MB</span></span></span><span class="hi-track"><i></i></span></div>
+                    <div class="hi-note">Notiz an deine Lehrkraft (optional)</div>
+                    <div class="hi-actions"><span class="hi-btn">Abgeben</span><span class="hi-wait">wird geprüft<i></i><i></i><i></i></span></div>
+                </div>
+                <div class="hi-result">
+            <div class="ab-sheet">
+                <p class="ab-sheet-title">Quadratische Funktionen – Üben</p>
+                <div class="ab-sheet-task">
+                    <span class="ab-sheet-no">02</span>
+                    <div><b>Scheitelform lesen:</b><p>Gib den Scheitelpunkt an und kreuze an, ob die Parabel nach oben oder unten geöffnet ist.</p></div>
+                    <span class="ab-sheet-pts"><span class="ab-pts-open">___</span><span class="ab-pts-done ab-given">5</span> / 6 P.</span>
+                </div>
+                <p class="ab-sheet-line"><b>a)</b><span class="m">f(x) = (x − 3)² + 1</span><span class="s">S( <span class="ab-blank"><span class="ab-hand">3</span></span> | <span class="ab-blank"><span class="ab-hand">1</span></span> )</span><span class="ab-choice"><span class="ab-tick is-x"></span>oben <span class="ab-tick"></span>unten</span><i class="ab-mark good"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></p>
+                <p class="ab-sheet-line"><b>b)</b><span class="m">g(x) = −(x + 2)² + 4</span><span class="s">S( <span class="ab-blank"><span class="ab-hand ab-wrong">2</span><span class="ab-fix">−2</span></span> | <span class="ab-blank"><span class="ab-hand">4</span></span> )</span><span class="ab-choice"><span class="ab-tick"></span>oben <span class="ab-tick is-x"></span>unten</span><i class="ab-mark bad">✗</i></p>
+                <p class="ab-sheet-line"><b>c)</b><span class="m">h(x) = 2x² − 5</span><span class="s">S( <span class="ab-blank"><span class="ab-hand">0</span></span> | <span class="ab-blank"><span class="ab-hand">−5</span></span> )</span><span class="ab-choice"><span class="ab-tick is-x"></span>oben <span class="ab-tick"></span>unten</span><i class="ab-mark good"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></p>
+            </div>
+            <div class="ab-side">
+                <span class="ab-pill"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Kriterien erfüllt</span>
+                <p class="ab-score">5 / 6 <small>P.</small></p>
+                <ul class="ab-fb">
+                    <li class="good"><i><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Öffnung überall richtig erkannt</li>
+                    <li class="bad"><i>✗</i>Bei b) das Vorzeichen: S(−2 | 4)</li>
+                </ul>
+                <p class="ab-meta">Versuch 1 abgegeben am 26.11.</p>
+            </div>
+                </div>
+            </div>
+        </div>
+    </template>
 
-<footer style="text-align: center; padding: 2rem 0;">
-    <img src="/assets/open_quack.png" alt="open.tutor.new logo" style="width: 40px; height: 40px; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto;">
-    <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
-        <a href="https://tutor.new" class="nav-link link-about">Visit tutor.new</a>
-        <a href="https://github.com/tutornew/OpenTutor" class="nav-link link-about" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-        <a href="https://discord.com/invite/TCWEJASD" class="nav-link link-about" target="_blank" rel="noopener noreferrer">Join Discord</a>
-        <a href="mailto:friedrich@tutor.new" class="nav-link link-about">Write an email</a>
+    <section class="aud" id="lehrpersonen">
+        <div class="wrap">
+            <div class="tour tour-teacher" data-tour-teacher>
+                <div>
+                    <h2>Die Lehrersicht</h2>
+                    <ol class="tour-steps">
+                        <li><button class="tour-step is-active" type="button" data-step="plan" data-dur="11500" style="--dur: 11.5s" aria-pressed="true"><b>Unterricht vorbereiten</b><span>Ein Arbeitsplan mit Aufgaben für die Klasse: aus Ihren eigenen Unterlagen oder mit neu erstelltem Material.</span></button></li>
+                        <li><button class="tour-step" type="button" data-step="progress" data-dur="9000" aria-pressed="false"><b>Sehen, wo alle stehen</b><span>Aus Abgaben und freiem Üben: was sitzt, wo es hakt und wer gerade Hilfe braucht.</span></button></li>
+                    </ol>
+                </div>
+                <div class="tour-stage" data-active="plan">
+                    <div class="tour-frame">
+                        <iframe src="/teacher-preview/index.html?v=a130677396" title="Beispiel eines Arbeitsplans in der Lehreransicht: Aufgaben mit verknüpften Dateien, und der Fortschritt der Klasse mit einer Erkenntnis." loading="lazy" tabindex="-1"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="side-by-side" id="anpassen">
+        <div class="wrap">
+            <div class="sbs-head">
+                <h2>Anpassen</h2>
+                <p>Jede Schule ist anders, jede Klasse auch.</p>
+            </div>
+            <div class="two">
+                <article>
+                    <div class="two-vis" aria-hidden="true">
+                        <div class="mini">
+                            <div class="mini-app"><i><svg viewBox="0 0 32 32" width="30" height="30"><rect x="3" y="3" width="11.5" height="11.5" rx="2.5" fill="#c4521f"/><rect x="17.5" y="3" width="11.5" height="11.5" rx="2.5" fill="#fff" stroke="#c4521f" stroke-width="2"/><rect x="3" y="17.5" width="11.5" height="11.5" rx="2.5" fill="#fff" stroke="#c4521f" stroke-width="2"/><rect x="17.5" y="17.5" width="11.5" height="11.5" rx="2.5" fill="#c4521f"/><path d="M6.5 9h4.5M8.75 6.2v.01M8.75 11.8v.01M21 24h4.5M23.25 21.2v.01M23.25 26.8v.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></i><b>Bruch-Memory</b><span>von Frau Keller</span><span class="mini-tag">in Klasse 7b</span></div>
+                            <div class="scores"><b>Ergebnisse</b><div><span>Ada</span><em>18 / 20</em></div><div><span>Ben</span><em>15 / 20</em></div><div><span>Clara</span><em>20 / 20</em></div></div>
+                        </div>
+                    </div>
+                    <h3>Eigene Mini-Apps verteilen</h3>
+                    <p>Selbst gebaute Lernspiele an die Klasse verteilen: Sie laufen geschützt auf openTutor, und die Ergebnisse kommen bei Ihnen an.</p>
+                </article>
+                <article>
+                    <div class="two-vis" aria-hidden="true">
+                        <div class="code"><span class="f"># schule.yaml</span><br><span class="k">name:</span> <span class="v">Kantonsschule Musterhausen</span><br><span class="k">sprachen:</span> <span class="v">[de, fr, en]</span><br><span class="add"><span class="k">notenskala:</span> <span class="v">1–6, halbe Noten</span></span><span class="add"><span class="k">anmeldung:</span> <span class="v">Schul-Login</span></span><span class="k">tutor_zeit:</span> <span class="v">30 min pro Woche</span></div>
+                    </div>
+                    <h3>Den Code anpassen</h3>
+                    <p>Der Code ist offen. Ihre Informatik passt openTutor an Ihre Schule an, oder wir helfen dabei.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="side-by-side" id="betrieb">
+        <div class="wrap">
+            <div class="sbs-head">
+                <h2>Betrieb</h2>
+                <p>Zwei Wege, dieselbe Software.</p>
+            </div>
+            <div class="hosting">
+                <div class="host host-us">
+                    <div class="host-top"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="10" width="40" height="44" rx="5" fill="#fff" stroke="#111" stroke-width="2.5"/><path d="M12 24.5h40M12 39.5h40" stroke="#111" stroke-width="2.5"/><g fill="#12734a"><circle cx="20" cy="17.5" r="2.6"/><circle cx="20" cy="32" r="2.6"/><circle cx="20" cy="47" r="2.6"/></g><path d="M30 17.5h15M30 32h15M30 47h15" stroke="#111" stroke-width="2.5" stroke-linecap="round"/></svg><div><h3>Bei uns gehostet</h3><p class="host-price">Kostenlos, KI nach Verbrauch</p></div></div>
+                    <ul>
+                        <li>Eigener Server, Schweiz oder EU</li>
+                        <li>Einrichtung und Updates von uns</li>
+                    </ul>
+                    <a class="btn btn-primary" href="https://tutor.new/gespraech.html">Gespräch vereinbaren</a>
+                </div>
+                <div class="host host-self">
+                    <div class="host-top"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 28L32 10l24 18" fill="none" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/><path d="M13 25v29h38V25" fill="#fff" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/><rect x="27" y="36" width="10" height="18" fill="#fde0cd" stroke="#111" stroke-width="2.5"/><rect x="40" y="31" width="9" height="13" rx="2" fill="#12734a"/><circle cx="44.5" cy="35" r="1.4" fill="#fff"/><path d="M42.5 39.5h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg><div><h3>Selbst betreiben</h3><p class="host-price">Kostenlos, eigene Server- und KI-Kosten</p></div></div>
+                    <ul>
+                        <li>Auf Ihrem eigenen Server, mit KI-Anbietern Ihrer Wahl</li>
+                        <li>Mit Docker Compose, wie bei uns</li>
+                    </ul>
+                    <a class="btn" href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="side-by-side" id="faq">
+        <div class="wrap">
+            <div class="sbs-head">
+                <h2>Häufige Fragen</h2>
+            </div>
+            <dl class="faq">
+                <div><dt>Für welche Fächer und Stufen?</dt><dd>Für alle Fächer und Stufen. Der Tutor übt mit dem Material, das Sie hochladen.</dd></div>
+                <div><dt>Bekommen die Schüler:innen Lösungen vorgesagt?</dt><dd>Nein. Der Tutor fragt zurück und gibt Denkanstösse, den nächsten Schritt machen die Schüler:innen selbst.</dd></div>
+                <div><dt>Was, wenn die KI Fehler macht?</dt><dd>Der Tutor arbeitet mit Ihrem Material, nicht mit dem freien Netz. Und Sie sehen jede Interaktion und können eingreifen.</dd></div>
+                <div><dt>Was geschieht mit den Daten?</dt><dd>Sie bleiben auf Servern in der Schweiz oder EU, nach DSG und DSGVO, und trainieren keine KI-Modelle. Mehr im <a href="/datenschutz.html">Datenschutz-Steckbrief</a>.</dd></div>
+                <div><dt>Wer sieht die Gespräche?</dt><dd>Die Lehrpersonen der Klasse. Berührt ein Gespräch ein heikles Thema, wird die Lehrperson informiert.</dd></div>
+                <div><dt>Brauchen die Schüler:innen ein Schulgerät?</dt><dd>Nein. openTutor läuft im Browser und als App, auch auf dem eigenen Handy. Angemeldet wird mit einem Code.</dd></div>
+                <div><dt>Was kostet openTutor?</dt><dd>Selbst betrieben nichts. Bei uns gehostet ebenfalls nichts, bezahlt wird nur die KI-Nutzung als Tutor-Zeit.</dd></div>
+                <div><dt>Wie lange dauert die Einführung?</dt><dd>Eine Klasse ist in einer Freistunde eingerichtet: Material hochladen, Codes verteilen, loslegen.</dd></div>
+            </dl>
+        </div>
+    </section>
+
+</main>
+
+<footer class="colophon">
+    <div class="wrap">
+        <p>openTutor wird von der Sophia Edu Labs GmbH in Zürich entwickelt.</p>
+        <a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a>
+        <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+        <a href="https://tutor.new/impressum.html">Impressum</a>
+        <a href="/datenschutz.html">Datenschutz</a>
+        <a href="https://tutor.new">tutor.new</a>
     </div>
 </footer>
 
+<script>
+    // The hero is a school seen from afar. The lines rise from the server once; then the rooms
+    // keep working, slowly and each at its own pace: the tutor answers on the tablet, the class
+    // answers a quiz on the wall (now and then a memory game instead), a sheet is handed in and
+    // shows up on the teacher's overview, flash cards turn. Nothing moves for reduced motion.
+    (function () {
+        const svg = document.querySelector(".hero-visual svg");
+        svg.classList.add("kl-go");
+        if (!matchMedia("(prefers-reduced-motion: no-preference)").matches || !svg.animate) return;
 
-        
-        
-    </div>
+        const $ = (s) => svg.querySelector(s);
+        const $$ = (s) => [...svg.querySelectorAll(s)];
+        const EASE = "cubic-bezier(0.45, 0, 0.3, 1)";
+        const POP = "cubic-bezier(0.3, 1.4, 0.5, 1)";
+        const pick = (list) => list[Math.floor(Math.random() * list.length)];
+        const shuffle = (list) => list.map((v) => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map((p) => p[1]);
+        const set = (el, styles) => Object.assign(el.style, styles);
 
-    
-    
-        <script src="/i18n.js"></script>
-    
+        // A clock that only runs while the picture is on screen and the tab is visible: the school
+        // pauses instead of racing ahead while nobody watches.
+        let onScreen = true;
+        let last = performance.now();
+        const timers = new Set();
+        new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }).observe(svg);
+        (function frame(now) {
+            const dt = Math.min(now - last, 100);
+            last = now;
+            if (onScreen) for (const t of [...timers]) if ((t.left -= dt) <= 0) { timers.delete(t); t.done(); }
+            requestAnimationFrame(frame);
+        })(last);
+        const wait = (ms) => new Promise((done) => timers.add({ left: ms, done }));
+        const between = (a, b) => wait(a + Math.random() * (b - a));
+
+        async function to(el, frame, ms = 700, easing = EASE) {
+            const a = el.animate([frame], { duration: ms, easing, fill: "forwards" });
+            await a.finished;
+            a.commitStyles();
+            a.cancel();
+        }
+
+        // Server: LEDs flicker, load bars drift; light runs down a cable (to a room) or up (to the server).
+        const leds = $$(".sv-led");
+        const blink = () => pick(leds).animate([{ opacity: 1 }, { opacity: 0.2 }, { opacity: 1 }], { duration: 650 });
+        const pulses = Object.fromEntries($$(".kl-pulse").map((p) => [p.dataset.room, p]));
+        async function send(room, up = false) {
+            if (!up) blink();
+            const path = [
+                { strokeDashoffset: 0, opacity: 0 },
+                { strokeDashoffset: -0.08, opacity: 1, offset: 0.08 },
+                { strokeDashoffset: -0.92, opacity: 1, offset: 0.92 },
+                { strokeDashoffset: -1, opacity: 0 },
+            ];
+            const timing = { duration: room[0] === "t" ? 2000 : 1600, easing: "cubic-bezier(0.4, 0, 0.6, 1)", direction: up ? "reverse" : "normal" };
+            await Promise.all([...pulses[room].children].map((el) => el.animate(path, timing).finished));
+            if (up) blink();
+        }
+        async function server() {
+            const bars = $$(".sv-bar");
+            for (;;) {
+                await between(1400, 3400);
+                blink();
+                to(pick(bars), { transform: `scaleX(${(0.35 + Math.random() * 0.65).toFixed(2)})` }, 1600, "ease-in-out");
+            }
+        }
+
+        // Top left: the pupil writes (or sketches a parabola), the tutor answers, then asks again.
+        async function tutor() {
+            const bub = $(".tl-bub"), q = $(".tl-q"), wave = $(".tl-wave"), ok = $(".tl-ok");
+            const lines = $$(".tl-line"), graph = $(".tl-graph"), curve = $(".tl-curve"), vertex = $(".tl-vertex");
+            const hide = { transform: "scale(0)", opacity: 0 }, show = { transform: "scale(1)", opacity: 1 };
+            for (let round = 1; ; round++) {
+                await between(2600, 3600);
+                if (round % 3 === 0) {
+                    set(graph, { opacity: 1 });
+                    await to(curve, { strokeDashoffset: 0 }, 2400, "ease-in-out");
+                    await to(vertex, { transform: "scale(1)" }, 450, POP);
+                } else {
+                    for (const l of lines) {
+                        await to(l, { strokeDashoffset: 0 }, 900 + Math.random() * 500, "ease-in-out");
+                        await between(250, 800);
+                    }
+                }
+                await wait(500);
+                to(bub, hide, 500);
+                await send("tl", true);
+                await wait(300);
+                await send("tl");
+                set(q, { opacity: 0 });
+                set(ok, { opacity: 0 });
+                set(wave, { opacity: 1 });
+                wave.classList.add("talking");
+                await to(bub, show, 550, POP);
+                await between(3800, 5200);
+                wave.classList.remove("talking");
+                await Promise.all([to(wave, { opacity: 0 }, 300), to(ok, { opacity: 1 }, 300)]);
+                await between(2400, 3200);
+                await Promise.all([to(bub, hide, 500), ...lines.map((l) => to(l, { opacity: 0 }, 600)), to(graph, { opacity: 0 }, 600)]);
+                lines.forEach((l) => set(l, { strokeDashoffset: 1, opacity: 1 }));
+                set(curve, { strokeDashoffset: 1 });
+                set(vertex, { transform: "scale(0)" });
+                await wait(700);
+                set(ok, { opacity: 0 });
+                set(q, { opacity: 1 });
+                await to(bub, show, 550, POP);
+            }
+        }
+
+        // Top right: a quiz question, an answer, the next question. Every fourth round the board
+        // turns over to a memory game for a while.
+        const SHAPES = [
+            (x, y) => `M${x - 3.6} ${y}a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0Z`,
+            (x, y) => `M${x - 3.2} ${y - 3.2}h6.4v6.4h-6.4Z`,
+            (x, y) => `M${x} ${y - 4.2}L${x + 4.4} ${y + 3.4}H${x - 4.4}Z`,
+            (x, y) => `M${x} ${y - 4.6}L${x + 4.6} ${y}L${x} ${y + 4.6}L${x - 4.6} ${y}Z`,
+        ];
+        const cards = $$(".mt").map((g) => ({ g, box: g.querySelector("rect"), sym: g.querySelector(".mt-sym"), cx: +g.dataset.cx, cy: +g.dataset.cy }));
+        function paint(c, state) {
+            set(c.box, { fill: state === "down" ? "#fde0cd" : state === "up" ? "#fff" : "#c4521f", stroke: state === "down" ? "#fde0cd" : "#c4521f" });
+            set(c.sym, { opacity: state === "down" ? 0 : 1, fill: state === "done" ? "#fff" : "#c4521f" });
+        }
+        async function turn(c, state) {
+            await to(c.g, { transform: "scaleX(0)" }, 170, "ease-in");
+            paint(c, state);
+            await to(c.g, { transform: "scaleX(1)" }, 170, "ease-out");
+        }
+        async function memory(quiz, mem) {
+            await send("tr");
+            const order = shuffle([0, 0, 1, 1, 2, 2, 3, 3]);
+            cards.forEach((c, i) => { c.kind = order[i]; c.done = false; c.sym.setAttribute("d", SHAPES[c.kind](c.cx, c.cy)); paint(c, "down"); });
+            await to(quiz, { transform: "scaleX(0)" }, 350, "ease-in");
+            await to(mem, { transform: "scaleX(1)" }, 350, "ease-out");
+            await wait(1400);
+            for (const kind of shuffle([0, 1, 2, 3])) {
+                const [a, b] = shuffle(cards.filter((c) => c.kind === kind));
+                const others = cards.filter((c) => c.kind !== kind && !c.done);
+                if (others.length && Math.random() < 0.5) {
+                    const miss = pick(others);
+                    await turn(a, "up");
+                    await wait(700);
+                    await turn(miss, "up");
+                    await wait(1300);
+                    await Promise.all([turn(a, "down"), turn(miss, "down")]);
+                    await between(800, 1300);
+                }
+                await turn(a, "up");
+                await wait(700);
+                await turn(b, "up");
+                await wait(600);
+                await Promise.all([a, b].map((c) => to(c.box, { fill: "#c4521f" }, 400)));
+                [a, b].forEach((c) => { c.done = true; paint(c, "done"); });
+                await between(1000, 1600);
+            }
+            await wait(1800);
+            await send("tr", true);
+            await to(mem, { transform: "scaleX(0)" }, 350, "ease-in");
+            await to(quiz, { transform: "scaleX(1)" }, 350, "ease-out");
+        }
+        async function quiz() {
+            const board = $(".tr-quiz"), mem = $(".tr-mem"), title = $(".tr-title");
+            const tiles = $$(".tr-tile").map((g) => ({ box: g.querySelector(".tr-box"), tick: g.querySelector(".tr-tick") }));
+            let chosen = 1;
+            await wait(4200);
+            for (let round = 1; ; round++) {
+                if (round % 4 === 0) await memory(board, mem);
+                await Promise.all([to(tiles[chosen].box, { fill: "#fde0cd" }, 500), to(tiles[chosen].tick, { strokeDashoffset: 1 }, 300), to(title, { strokeDashoffset: 1 }, 500)]);
+                title.setAttribute("d", `M308 146H${330 + Math.round(Math.random() * 40)}`);
+                await to(title, { strokeDashoffset: 0 }, 900, "ease-out");
+                await between(2600, 4600);
+                chosen = Math.floor(Math.random() * 4);
+                await to(tiles[chosen].box, { fill: "#c4521f" }, 400);
+                await to(tiles[chosen].tick, { strokeDashoffset: 0 }, 350, "ease-out");
+                await send("tr", true);
+                await between(3200, 5200);
+            }
+        }
+
+        // Bottom right: the teacher's overview. Pupils move from not started (white) to working
+        // (blue), sometimes stuck (orange), to done (green); when all are done a new lesson starts.
+        const SQ = { empty: ["#fff", "#111"], blue: ["#2747c4", "#2747c4"], orange: ["#c4521f", "#c4521f"], green: ["#12734a", "#12734a"] };
+        const squares = $$(".br-sq").map((el, i) => ({ el, state: ["blue", "orange", "empty", "green"][i] }));
+        const stats = $$(".br-bar");
+        const mark = (s, state) => { s.state = state; return to(s.el, { fill: SQ[state][0], stroke: SQ[state][1] }, 650); };
+        const nudgeBar = (lo = 0.3) => to(pick(stats), { transform: `scaleY(${(lo + Math.random() * (1 - lo)).toFixed(2)})` }, 1200, "ease-in-out");
+        function handedIn() {
+            const s = squares.find((s) => s.state === "orange") || squares.find((s) => s.state === "blue") || squares.find((s) => s.state === "empty");
+            if (s) mark(s, "green");
+            nudgeBar(0.6);
+        }
+        async function teacher() {
+            await wait(6000);
+            for (;;) {
+                await between(5500, 9500);
+                if (squares.every((s) => s.state === "green")) {
+                    await wait(2500);
+                    await Promise.all([...squares.map((s, i) => wait(i * 160).then(() => mark(s, "empty"))), ...stats.map((b) => to(b, { transform: "scaleY(0.3)" }, 1000))]);
+                    continue;
+                }
+                const s = pick(squares.filter((s) => s.state !== "green"));
+                await mark(s, s.state === "empty" || s.state === "orange" ? "blue" : Math.random() < 0.4 ? "orange" : "green");
+                if (Math.random() < 0.6) nudgeBar();
+            }
+        }
+
+        // Bottom left: the sheet is handed in, travels to the server and on to the teacher; a new
+        // sheet arrives and slowly fills up again.
+        async function sheet() {
+            const page = $(".bl-page"), lines = $$(".bl-line");
+            await wait(9000);
+            for (;;) {
+                await to(page, { transform: "scale(0.12)", opacity: 0 }, 900, "cubic-bezier(0.5, 0, 0.75, 0)");
+                await send("bl", true);
+                await wait(300);
+                await send("br");
+                handedIn();
+                await between(1000, 1600);
+                await send("bl");
+                lines.forEach((l) => set(l, { strokeDashoffset: 1 }));
+                set(page, { transform: "translateY(-10px)", opacity: 0 });
+                await to(page, { transform: "translateY(0)", opacity: 1 }, 800, "ease-out");
+                await between(1800, 2800);
+                for (const l of lines) {
+                    await to(l, { strokeDashoffset: 0 }, 1400, "ease-in-out");
+                    await between(2000, 3800);
+                }
+                await between(2000, 3500);
+            }
+        }
+        async function flashcards() {
+            const card = $(".bl-card"), front = $(".bl-front"), back = $(".bl-back");
+            let answer = false;
+            await wait(12000);
+            for (;;) {
+                await to(card, { transform: "scaleX(0)" }, 260, "ease-in");
+                answer = !answer;
+                if (!answer) front.setAttribute("d", `M168 285H${175 + Math.round(Math.random() * 9)}`);
+                set(front, { opacity: answer ? 0 : 1 });
+                set(back, { opacity: answer ? 1 : 0 });
+                await to(card, { transform: "scaleX(1)" }, 260, "ease-out");
+                await (answer ? between(2600, 4000) : between(6000, 10000));
+            }
+        }
+
+        const safely = (loop) => loop().catch(() => {});
+        [server, tutor, quiz, teacher, sheet, flashcards].forEach(safely);
+    })();
+</script>
+
+<script>
+    // Guided view: the active line decides the visual. It advances on its own while in view and
+    // stops as soon as the visitor picks a line; no auto-advance for reduced motion.
+    (function () {
+        var tour = document.querySelector("[data-tour]");
+        if (!tour) return;
+        var steps = Array.prototype.slice.call(tour.querySelectorAll(".tour-step"));
+        var stage = tour.querySelector(".tour-stage");
+        var frame = tour.querySelector("iframe");
+        var tabsTemplate = document.getElementById("tour-tabs");
+        var panesTemplate = document.getElementById("tour-panes");
+        var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var auto = !still;
+        var stepTimer = null;
+        var materialTimers = [];
+        var planTimers = [];
+        var index = 0;
+
+        // The session preview is served from this site, so the page can add the worksheet and
+        // work plan tabs to its tab bar and switch its views. If that is not possible, the
+        // preview simply stays as it is.
+        function frameDoc() {
+            try {
+                var doc = frame.contentDocument;
+                var tabs = doc && doc.querySelector(".fs-tabs");
+                var paper = doc && doc.querySelector(".fs-paper");
+                if (!tabs || !paper) return null;
+                // Always the current tour.css, never a cached older one.
+                var css = doc.getElementById("tour-css");
+                if (!css) {
+                    css = doc.createElement("link");
+                    css.id = "tour-css";
+                    css.rel = "stylesheet";
+                    doc.head.appendChild(css);
+                }
+                if (css.getAttribute("href") !== "/session-preview/tour.css?v=19ee39da27") {
+                    css.setAttribute("href", "/session-preview/tour.css?v=19ee39da27");
+                }
+                if (!doc.querySelector("[data-tour-tab]")) {
+                    tabs.insertBefore(doc.importNode(tabsTemplate.content, true), tabs.querySelector(".fs-tabs-add"));
+                    // The worksheet goes onto the notes paper; the hand-in screen covers the
+                    // whole notes side, tab bar included.
+                    var panes = doc.importNode(panesTemplate.content, true);
+                    var handIn = panes.querySelector(".tour-plan");
+                    paper.appendChild(panes);
+                    doc.querySelector(".fs-notes").appendChild(handIn);
+                }
+                return doc;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function syncFrame() {
+            var doc = frameDoc();
+            if (!doc) return;
+            var name = stage.getAttribute("data-active");
+            var phase = stage.getAttribute("data-phase");
+            var classes = doc.documentElement.classList;
+            classes.toggle("tour-no-pip", name !== "call");
+            classes.toggle("tour-mat", name !== "call");
+            classes.toggle("tour-sheet", (name === "materials" && stage.getAttribute("data-material") === "sheet") ||
+                (name === "plan" && (phase === "sheet" || phase === "shrink")));
+            classes.toggle("tour-planview", name === "plan");
+            ["sheet", "shrink", "upload", "uploaded", "press", "sent", "done"].forEach(function (p) {
+                classes.toggle("tour-p-" + p, name === "plan" && phase === p);
+            });
+        }
+
+        frame.addEventListener("load", syncFrame);
+
+        function setMaterial(material) {
+            stage.setAttribute("data-material", material);
+            syncFrame();
+        }
+
+        // Materials: the notes first, then the worksheet, then alternating.
+        function runMaterials(on) {
+            materialTimers.forEach(clearTimeout);
+            materialTimers = [];
+            setMaterial("notes");
+            if (!on || still) return;
+            // The worksheet stays longer: its answers are written in before it scrolls.
+            (function flip(delay) {
+                materialTimers.push(setTimeout(function () {
+                    var next = stage.getAttribute("data-material") === "notes" ? "sheet" : "notes";
+                    setMaterial(next);
+                    flip(next === "sheet" ? 7000 : 4500);
+                }, delay));
+            })(4500);
+        }
+
+        // Hand-in: the worksheet shrinks into a file, it uploads, "Abgeben" is pressed, it is
+        // checked, the result shows; then it starts over. Jumping in from another line simply
+        // starts this sequence from the worksheet.
+        function setPhase(phase) {
+            stage.setAttribute("data-phase", phase);
+            syncFrame();
+        }
+
+        function runPlan(on) {
+            planTimers.forEach(clearTimeout);
+            planTimers = [];
+            if (!on) return setPhase("none");
+            if (still) return setPhase("done");
+            (function loop() {
+                setPhase("sheet");
+                planTimers.push(setTimeout(function () { setPhase("shrink"); }, 900));
+                planTimers.push(setTimeout(function () { setPhase("upload"); }, 1800));
+                planTimers.push(setTimeout(function () { setPhase("uploaded"); }, 3700));
+                planTimers.push(setTimeout(function () { setPhase("press"); }, 4500));
+                planTimers.push(setTimeout(function () { setPhase("sent"); }, 4700));
+                planTimers.push(setTimeout(function () { setPhase("done"); }, 6300));
+                planTimers.push(setTimeout(loop, 11500));
+            })();
+        }
+
+        function show(i, timed) {
+            index = i;
+            steps.forEach(function (step, n) {
+                var on = n === i;
+                step.classList.toggle("is-active", on);
+                step.classList.remove("is-timed");
+                step.setAttribute("aria-pressed", on ? "true" : "false");
+                if (on && timed) {
+                    void step.offsetWidth;
+                    step.classList.add("is-timed");
+                }
+            });
+            var name = steps[i].getAttribute("data-step");
+            stage.setAttribute("data-active", name);
+            runMaterials(name === "materials");
+            runPlan(name === "plan");
+            syncFrame();
+        }
+
+        function schedule() {
+            clearTimeout(stepTimer);
+            if (!auto) return;
+            stepTimer = setTimeout(function () {
+                show((index + 1) % steps.length, true);
+                schedule();
+            }, Number(steps[index].getAttribute("data-dur")) || 9000);
+        }
+
+        steps.forEach(function (step, n) {
+            function pick() {
+                if (!auto && n === index) return;
+                auto = false;
+                clearTimeout(stepTimer);
+                show(n, false);
+            }
+            step.addEventListener("click", pick);
+            step.addEventListener("mouseenter", pick);
+        });
+
+        if (auto && "IntersectionObserver" in window) {
+            new IntersectionObserver(function (entries) {
+                if (!auto) return;
+                if (entries[0].isIntersecting) {
+                    show(index, true);
+                    schedule();
+                } else {
+                    clearTimeout(stepTimer);
+                }
+            }, { threshold: 0.35 }).observe(tour);
+        }
+    })();
+</script>
+<script>
+    // Teacher view: the active line decides which view the teacher preview shows. It advances on
+    // its own while in view and stops as soon as the visitor picks a line.
+    (function () {
+        var tour = document.querySelector("[data-tour-teacher]");
+        if (!tour) return;
+        var steps = Array.prototype.slice.call(tour.querySelectorAll(".tour-step"));
+        var stage = tour.querySelector(".tour-stage");
+        var frame = tour.querySelector("iframe");
+        var auto = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var stepTimer = null;
+        var index = 0;
+
+        function syncFrame() {
+            try {
+                if (frame.contentWindow && frame.contentWindow.tpShow) {
+                    frame.contentWindow.tpShow(stage.getAttribute("data-active"));
+                }
+            } catch (error) {
+                // Not reachable: the preview stays on its first view.
+            }
+        }
+
+        frame.addEventListener("load", syncFrame);
+
+        function show(i, timed) {
+            index = i;
+            steps.forEach(function (step, n) {
+                var on = n === i;
+                step.classList.toggle("is-active", on);
+                step.classList.remove("is-timed");
+                step.setAttribute("aria-pressed", on ? "true" : "false");
+                if (on && timed) {
+                    void step.offsetWidth;
+                    step.classList.add("is-timed");
+                }
+            });
+            stage.setAttribute("data-active", steps[i].getAttribute("data-step"));
+            syncFrame();
+        }
+
+        function schedule() {
+            clearTimeout(stepTimer);
+            if (!auto) return;
+            stepTimer = setTimeout(function () {
+                show((index + 1) % steps.length, true);
+                schedule();
+            }, Number(steps[index].getAttribute("data-dur")) || 9000);
+        }
+
+        steps.forEach(function (step, n) {
+            function pick() {
+                if (!auto && n === index) return;
+                auto = false;
+                clearTimeout(stepTimer);
+                show(n, false);
+            }
+            step.addEventListener("click", pick);
+            step.addEventListener("mouseenter", pick);
+        });
+
+        if ("IntersectionObserver" in window) {
+            new IntersectionObserver(function (entries) {
+                if (!entries[0].isIntersecting) return clearTimeout(stepTimer);
+                show(index, auto);
+                schedule();
+            }, { threshold: 0.35 }).observe(tour);
+        } else {
+            show(0, false);
+        }
+    })();
+</script>
 </body>
 </html>
-
