@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lernspiele – openTutor</title>
+    <meta name="description" content="Die Lernspiele in openTutor: Karteikarten, Kopfrechnen, Algebra-Training, Test und Standortbestimmung, und wie Schulen eigene dazubauen.">
+    <link rel="canonical" href="https://open.tutor.new/lernspiele/">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="openTutor">
+    <meta property="og:locale" content="de_CH">
+    <meta property="og:url" content="https://open.tutor.new/lernspiele/">
+    <meta property="og:title" content="Lernspiele – openTutor">
+    <meta property="og:description" content="Die Lernspiele in openTutor: Karteikarten, Kopfrechnen, Algebra-Training, Test und Standortbestimmung, und wie Schulen eigene dazubauen.">
+    <meta property="og:image" content="https://open.tutor.new/og/lernspiele.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Lernspiele in openTutor: Karteikarten, Kopfrechnen, Algebra-Training, Test und Standortbestimmung.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="/fonts/Castoro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/style.css?v=c2c5f101f2">
+    <style>
+        /* Privacy fact sheet: four groups side by side, each with a two-tone icon and ruled terms,
+           a legal note, and a call to action for the school's data protection office. */
+        .dp {
+            padding: 64px 0 88px;
+        }
+
+        .dp-back {
+            display: inline-block;
+            margin-bottom: 28px;
+            font-size: 15px;
+        }
+
+        .dp h1 {
+            margin: 0 0 14px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(40px, 5.4vw, 64px);
+            line-height: 1.05;
+            letter-spacing: -0.015em;
+        }
+
+        .dp-lead {
+            max-width: 34em;
+            margin: 0 0 48px;
+            font-size: 20px;
+        }
+
+        .dp-groups {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            border-top: 1px solid var(--ink);
+            border-bottom: 1px solid var(--ink);
+        }
+
+        .dp-group {
+            padding: 24px 22px 26px;
+        }
+
+        .dp-group:first-child {
+            padding-left: 0;
+        }
+
+        .dp-group:last-child {
+            padding-right: 0;
+        }
+
+        .dp-group + .dp-group {
+            border-left: 1px solid var(--rule);
+        }
+
+        .dp-icon {
+            display: block;
+            width: 76px;
+            height: 76px;
+            margin: 0 0 14px -6px;
+        }
+
+        .dp-icon .tint { fill: var(--tint); }
+        .dp-icon .glyph { fill: none; stroke: var(--tone); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+        .dp-blue { --tone: #2747c4; --tint: #dde5ff; }
+        .dp-green { --tone: #12734a; --tint: #d3efdf; }
+        .dp-orange { --tone: #c4521f; --tint: #fde0cd; }
+        .dp-purple { --tone: #7b4aa0; --tint: #efe3f7; }
+
+        .dp-group h2 {
+            margin: 0 0 12px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 26px;
+            line-height: 1.15;
+        }
+
+        .dp-group dl {
+            margin: 0;
+        }
+
+        .dp-group dl div {
+            padding: 11px 0 12px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .dp-group dt {
+            font-size: 12.5px;
+            font-weight: 650;
+            letter-spacing: 0.02em;
+            color: var(--muted);
+        }
+
+        .dp-group dd {
+            margin: 2px 0 0;
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .dp-group small {
+            display: block;
+            margin-top: 3px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: var(--muted);
+        }
+
+        .dp-legal {
+            max-width: 46em;
+            margin: 18px 0 0;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .dp-cta {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) auto;
+            gap: 24px 48px;
+            align-items: center;
+            margin-top: 56px;
+            padding: 30px 34px;
+            background: #d3efdf;
+        }
+
+        .dp-cta h2 {
+            margin: 0 0 8px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 1.15;
+        }
+
+        .dp-cta p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .dp-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 650;
+            text-decoration: none;
+            border: 1.5px solid var(--ink);
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: var(--ink);
+        }
+
+        .btn:hover {
+            color: #fff;
+            background: #2747c4;
+            border-color: #2747c4;
+        }
+
+        .colophon {
+            border-top: 3px solid var(--ink);
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .colophon .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 1.6rem;
+            padding-top: 18px;
+            padding-bottom: 44px;
+        }
+
+        .colophon p {
+            margin: 0 auto 0 0;
+        }
+
+        @media (max-width: 1000px) {
+            .dp-groups {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dp-group:nth-child(3) {
+                padding-left: 0;
+                border-left: 0;
+            }
+
+            .dp-group:nth-child(2) {
+                padding-right: 0;
+            }
+
+            .dp-group:nth-child(n + 3) {
+                border-top: 1px solid var(--ink);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dp {
+                padding-top: 40px;
+            }
+
+            .dp-groups {
+                grid-template-columns: 1fr;
+            }
+
+            .dp-group,
+            .dp-group:nth-child(2),
+            .dp-group:nth-child(3) {
+                padding: 22px 0 24px;
+                border-left: 0;
+            }
+
+            .dp-group + .dp-group {
+                border-top: 1px solid var(--ink);
+                border-left: 0;
+            }
+
+            .dp-cta {
+                grid-template-columns: 1fr;
+                padding: 24px 22px;
+            }
+        }
+
+        /* Lernspiele: the five built-in apps in ruled columns, then three steps for a school's own. */
+        .dp h2 {
+            margin: 0 0 14px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(30px, 3.4vw, 40px);
+            line-height: 1.1;
+        }
+
+        .ls-apps {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            margin: 0 0 16px;
+            border-top: 1px solid var(--ink);
+            border-bottom: 1px solid var(--ink);
+        }
+
+        .ls-app {
+            padding: 22px 20px 24px;
+        }
+
+        .ls-app:first-child {
+            padding-left: 0;
+        }
+
+        .ls-app:last-child {
+            padding-right: 0;
+        }
+
+        .ls-app + .ls-app {
+            border-left: 1px solid var(--rule);
+        }
+
+        .ls-app .dp-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 0 12px -5px;
+        }
+
+        .ls-app h3,
+        .ls-step h3 {
+            margin: 0 0 6px;
+            font-size: 18px;
+            font-weight: 650;
+        }
+
+        .ls-app p,
+        .ls-step p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.45;
+            color: var(--muted);
+        }
+
+        .ls-note {
+            max-width: 46em;
+            margin: 0 0 80px;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .ls-tag {
+            display: inline-block;
+            margin-left: 12px;
+            padding: 3px 10px;
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 650;
+            vertical-align: middle;
+            color: #c4521f;
+            background: #fde0cd;
+            border-radius: 999px;
+        }
+
+        .ls-steps {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin: 28px 0 0;
+            border-top: 1px solid var(--ink);
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .ls-step {
+            padding: 20px 24px 24px;
+        }
+
+        .ls-step:first-child {
+            padding-left: 0;
+        }
+
+        .ls-step:last-child {
+            padding-right: 0;
+        }
+
+        .ls-step + .ls-step {
+            border-left: 1px solid var(--rule);
+        }
+
+        .ls-n {
+            display: block;
+            margin-bottom: 8px;
+            font-family: var(--serif);
+            font-size: 34px;
+            line-height: 1;
+            color: #12734a;
+        }
+
+        .ls-code {
+            margin: 14px 0 0;
+            padding: 12px 14px;
+            overflow-x: auto;
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: #e8eef0;
+            background: #14241c;
+            border-radius: 10px;
+        }
+
+        .ls-code .k { color: #9ad7b4; }
+        .ls-code .v { color: #f4b892; }
+
+        .ls-dev {
+            max-width: 46em;
+            margin: 16px 0 0;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 1000px) {
+            .ls-apps,
+            .ls-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .ls-app,
+            .ls-app + .ls-app {
+                display: grid;
+                grid-template-columns: 52px minmax(0, 1fr);
+                gap: 0 16px;
+                padding: 16px 0;
+                border-left: 0;
+            }
+
+            .ls-app + .ls-app {
+                border-top: 1px solid var(--rule);
+            }
+
+            .ls-app .dp-icon {
+                grid-row: span 2;
+                width: 52px;
+                height: 52px;
+                margin: -4px 0 0 -4px;
+            }
+
+            .ls-step,
+            .ls-step + .ls-step {
+                padding: 18px 0 20px;
+                border-left: 0;
+            }
+
+            .ls-step + .ls-step {
+                border-top: 1px solid var(--rule);
+            }
+
+            .ls-code {
+                max-width: 420px;
+            }
+        }
+    </style>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://open.tutor.new/#website", "url": "https://open.tutor.new/", "name": "openTutor", "inLanguage": "de", "publisher": {"@id": "https://open.tutor.new/#organization"}}, {"@type": "Organization", "@id": "https://open.tutor.new/#organization", "name": "Sophia Labs GmbH", "url": "https://open.tutor.new/", "logo": "https://open.tutor.new/icon-512.png", "email": "friedrich@tutor.new", "address": {"@type": "PostalAddress", "streetAddress": "Schärenmoosstrasse 76", "postalCode": "8052", "addressLocality": "Zürich", "addressCountry": "CH"}, "taxID": "CHE-441.358.240"}, {"@type": "SoftwareApplication", "@id": "https://open.tutor.new/#software", "name": "openTutor", "description": "openTutor ist das quelloffene KI-Betriebssystem für Schulen: ein eigener KI-Tutor für jedes Kind, mit dem Material der Lehrperson, auf Servern in der Schweiz und der EU.", "url": "https://open.tutor.new/", "applicationCategory": "EducationalApplication", "operatingSystem": "Web, iOS, Android", "inLanguage": "de", "author": {"@id": "https://open.tutor.new/#organization"}, "publisher": {"@id": "https://open.tutor.new/#organization"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CHF", "description": "Die Software ist kostenlos. Bei uns gehostet zahlt die Schule die KI-Nutzung nach Verbrauch."}}, {"@type": "WebPage", "@id": "https://open.tutor.new/lernspiele/#webpage", "url": "https://open.tutor.new/lernspiele/", "name": "Lernspiele – openTutor", "inLanguage": "de", "isPartOf": {"@id": "https://open.tutor.new/#website"}, "about": {"@id": "https://open.tutor.new/#software"}, "dateModified": "2026-11-27"}]}</script>
+</head>
+<body>
+
+<header class="masthead">
+    <div class="wrap">
+        <a class="wordmark" href="/"><svg class="wordmark-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="11.5" r="6.5" fill="#14a35a"/><path stroke="currentColor" d="M9 23c11 7 35 7 46 0M32 28.5V57" fill="none" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>openTutor</a>
+        <nav aria-label="Links">
+            <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+            <a href="mailto:friedrich@tutor.new">Kontakt</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="dp">
+        <div class="wrap">
+            <a class="dp-back" href="/">← Zurück zu openTutor</a>
+            <h1>Lernspiele</h1>
+            <p class="dp-lead">Fünf sind schon dabei. Eigene lassen sich bauen und an die Klasse verteilen.</p>
+            <div class="ls-apps">
+                <article class="ls-app"><svg class="dp-icon dp-blue" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><rect x="3.5" y="8" width="12.5" height="9.5" rx="1.5"/><path d="M8 8V6a1.5 1.5 0 0 1 1.5-1.5h9.5A1.5 1.5 0 0 1 20.5 6v7.5a1.5 1.5 0 0 1-1.5 1.5H16"/><path d="M7 12.75h5.5"/></g></svg><h3>Karteikarten</h3><p>Begriff vorne, Erklärung hinten. Jede Karte kommt wieder, bis sie sitzt.</p></article>
+                <article class="ls-app"><svg class="dp-icon dp-orange" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path d="M7 4.5v5M4.5 7h5M14.5 7h5M5 15l4 4M9 15l-4 4M14.5 15.75h5M14.5 18.75h5"/></g></svg><h3>Kopfrechnen</h3><p>Kurze Rechenaufgaben, eine nach der anderen, im eigenen Tempo.</p></article>
+                <article class="ls-app"><svg class="dp-icon dp-green" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path d="M3.5 19.5h4.5v-4.5h4.5v-4.5h4.5V6h3.5"/><path d="M17 3.5l3 2.5-3 2.5"/></g></svg><h3>Algebra-Training</h3><p>Level, die aufeinander aufbauen. Fest eingestellt oder zum selbst Aufsteigen.</p></article>
+                <article class="ls-app"><svg class="dp-icon dp-purple" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 8.75l1.5 1.5 2.75-3M8.5 15.25l1.5 1.5 2.75-3M15 9.25h1M15 15.75h1"/></g></svg><h3>Test</h3><p>Ihre Fragen, einmal abgegeben und dann ausgewertet, mit Rückmeldung.</p></article>
+                <article class="ls-app"><svg class="dp-icon dp-blue" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="3.25"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></g></svg><h3>Standortbestimmung</h3><p>Wo jedes Kind in Mathematik steht, nach Lehrplan 21, und die Klasse als Ganzes.</p></article>
+            </div>
+            <p class="ls-note">Alle liegen im Arbeitsplan wie ein Arbeitsblatt. Der Tutor sieht, woran ein Kind gerade ist, und hilft weiter. Die Ergebnisse kommen in Ihrer Klassenübersicht an.</p>
+
+            <h2>Eigene Lernspiele <span class="ls-tag">Im Aufbau</span></h2>
+            <div class="ls-steps">
+                <article class="ls-step"><span class="ls-n">1</span><h3>Bauen</h3><p>Ein Lernspiel ist eine einzelne Webseite, von Hand gebaut oder mit einer KI. Zwei Zeilen verbinden es mit openTutor, für den Start und das Ergebnis:</p><pre class="ls-code"><span class="k">await</span> openTutor.start();
+openTutor.report({ richtig: <span class="v">8</span> });</pre></article>
+                <article class="ls-step"><span class="ls-n">2</span><h3>Hochladen</h3><p>Im Arbeitsplan unter Neu ▸ Lernspiel. openTutor startet es abgeschottet: ohne Zugriff auf Namen, Daten oder das Internet.</p></article>
+                <article class="ls-step"><span class="ls-n">3</span><h3>Verteilen</h3><p>Wie ein Arbeitsblatt an die Klasse geben. Die Ergebnisse kommen in Ihrer Klassenübersicht an, und andere Schulen können das Spiel übernehmen.</p></article>
+            </div>
+            <p class="ls-dev">Für die Informatik: Grössere Apps wie die Karteikarten sind Pakete im offenen Code, mit eigener Schüleransicht, Einstellungen für Lehrpersonen und Auswertung. <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a></p>
+
+            <div class="dp-cta">
+                <div>
+                    <h2>Ein Lernspiel gebaut, oder eine Idee dafür?</h2>
+                    <p>Wir bauen diesen Weg mit den ersten Schulen zusammen. Schicken Sie uns Ihr Spiel oder Ihre Idee.</p>
+                </div>
+                <div class="dp-actions">
+                    <a class="btn btn-primary" href="mailto:friedrich@tutor.new?subject=Lernspiel%20f%C3%BCr%20openTutor">Lernspiel schicken</a>
+                    <a class="btn" href="/">Zurück zu openTutor</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="colophon">
+    <div class="wrap">
+        <p>openTutor ist das quelloffene KI-Betriebssystem für Schulen: ein eigener KI-Tutor für jedes Kind, mit dem Material der Lehrperson, auf Servern in der Schweiz und der EU. Entwickelt von der Sophia Labs GmbH in Zürich.</p>
+        <a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a>
+        <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+        <a href="/impressum/">Impressum</a>
+        <a href="/impressum/#datenschutz">Datenschutz</a>
+    </div>
+</footer>
+
+</body>
+</html>

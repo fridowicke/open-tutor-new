@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Datenschutz-Steckbrief – openTutor</title>
+    <meta name="description" content="Wie openTutor mit den Daten von Schüler:innen umgeht: DSG und DSGVO, Hosting in der Schweiz oder der EU, kein KI-Training. Der Steckbrief zum Weitergeben.">
+    <link rel="canonical" href="https://open.tutor.new/datenschutz/">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="openTutor">
+    <meta property="og:locale" content="de_CH">
+    <meta property="og:url" content="https://open.tutor.new/datenschutz/">
+    <meta property="og:title" content="Datenschutz-Steckbrief – openTutor">
+    <meta property="og:description" content="Wie openTutor mit den Daten von Schüler:innen umgeht: DSG und DSGVO, Hosting in der Schweiz oder der EU, kein KI-Training. Der Steckbrief zum Weitergeben.">
+    <meta property="og:image" content="https://open.tutor.new/og/datenschutz.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Datenschutz-Steckbrief von openTutor: DSG und DSGVO, Server in der Schweiz oder EU, kein KI-Training.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="/fonts/Castoro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/style.css?v=c2c5f101f2">
+    <style>
+        /* Privacy fact sheet: four groups side by side, each with a two-tone icon and ruled terms,
+           a legal note, and a call to action for the school's data protection office. */
+        .dp {
+            padding: 64px 0 88px;
+        }
+
+        .dp-back {
+            display: inline-block;
+            margin-bottom: 28px;
+            font-size: 15px;
+        }
+
+        .dp h1 {
+            margin: 0 0 14px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(40px, 5.4vw, 64px);
+            line-height: 1.05;
+            letter-spacing: -0.015em;
+        }
+
+        .dp-lead {
+            max-width: 34em;
+            margin: 0 0 48px;
+            font-size: 20px;
+        }
+
+        .dp-groups {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            border-top: 1px solid var(--ink);
+            border-bottom: 1px solid var(--ink);
+        }
+
+        .dp-group {
+            padding: 24px 22px 26px;
+        }
+
+        .dp-group:first-child {
+            padding-left: 0;
+        }
+
+        .dp-group:last-child {
+            padding-right: 0;
+        }
+
+        .dp-group + .dp-group {
+            border-left: 1px solid var(--rule);
+        }
+
+        .dp-icon {
+            display: block;
+            width: 76px;
+            height: 76px;
+            margin: 0 0 14px -6px;
+        }
+
+        .dp-icon .tint { fill: var(--tint); }
+        .dp-icon .glyph { fill: none; stroke: var(--tone); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+        .dp-blue { --tone: #2747c4; --tint: #dde5ff; }
+        .dp-green { --tone: #12734a; --tint: #d3efdf; }
+        .dp-orange { --tone: #c4521f; --tint: #fde0cd; }
+        .dp-purple { --tone: #7b4aa0; --tint: #efe3f7; }
+
+        .dp-group h2 {
+            margin: 0 0 12px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 26px;
+            line-height: 1.15;
+        }
+
+        .dp-group dl {
+            margin: 0;
+        }
+
+        .dp-group dl div {
+            padding: 11px 0 12px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .dp-group dt {
+            font-size: 12.5px;
+            font-weight: 650;
+            letter-spacing: 0.02em;
+            color: var(--muted);
+        }
+
+        .dp-group dd {
+            margin: 2px 0 0;
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .dp-group small {
+            display: block;
+            margin-top: 3px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: var(--muted);
+        }
+
+        .dp-legal {
+            max-width: 46em;
+            margin: 18px 0 0;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .dp-cta {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) auto;
+            gap: 24px 48px;
+            align-items: center;
+            margin-top: 56px;
+            padding: 30px 34px;
+            background: #d3efdf;
+        }
+
+        .dp-cta h2 {
+            margin: 0 0 8px;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 1.15;
+        }
+
+        .dp-cta p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .dp-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 650;
+            text-decoration: none;
+            border: 1.5px solid var(--ink);
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: var(--ink);
+        }
+
+        .btn:hover {
+            color: #fff;
+            background: #2747c4;
+            border-color: #2747c4;
+        }
+
+        .colophon {
+            border-top: 3px solid var(--ink);
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .colophon .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 1.6rem;
+            padding-top: 18px;
+            padding-bottom: 44px;
+        }
+
+        .colophon p {
+            margin: 0 auto 0 0;
+        }
+
+        @media (max-width: 1000px) {
+            .dp-groups {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dp-group:nth-child(3) {
+                padding-left: 0;
+                border-left: 0;
+            }
+
+            .dp-group:nth-child(2) {
+                padding-right: 0;
+            }
+
+            .dp-group:nth-child(n + 3) {
+                border-top: 1px solid var(--ink);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dp {
+                padding-top: 40px;
+            }
+
+            .dp-groups {
+                grid-template-columns: 1fr;
+            }
+
+            .dp-group,
+            .dp-group:nth-child(2),
+            .dp-group:nth-child(3) {
+                padding: 22px 0 24px;
+                border-left: 0;
+            }
+
+            .dp-group + .dp-group {
+                border-top: 1px solid var(--ink);
+                border-left: 0;
+            }
+
+            .dp-cta {
+                grid-template-columns: 1fr;
+                padding: 24px 22px;
+            }
+        }
+    </style>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://open.tutor.new/#website", "url": "https://open.tutor.new/", "name": "openTutor", "inLanguage": "de", "publisher": {"@id": "https://open.tutor.new/#organization"}}, {"@type": "Organization", "@id": "https://open.tutor.new/#organization", "name": "Sophia Labs GmbH", "url": "https://open.tutor.new/", "logo": "https://open.tutor.new/icon-512.png", "email": "friedrich@tutor.new", "address": {"@type": "PostalAddress", "streetAddress": "Schärenmoosstrasse 76", "postalCode": "8052", "addressLocality": "Zürich", "addressCountry": "CH"}, "taxID": "CHE-441.358.240"}, {"@type": "SoftwareApplication", "@id": "https://open.tutor.new/#software", "name": "openTutor", "description": "openTutor ist das quelloffene KI-Betriebssystem für Schulen: ein eigener KI-Tutor für jedes Kind, mit dem Material der Lehrperson, auf Servern in der Schweiz und der EU.", "url": "https://open.tutor.new/", "applicationCategory": "EducationalApplication", "operatingSystem": "Web, iOS, Android", "inLanguage": "de", "author": {"@id": "https://open.tutor.new/#organization"}, "publisher": {"@id": "https://open.tutor.new/#organization"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CHF", "description": "Die Software ist kostenlos. Bei uns gehostet zahlt die Schule die KI-Nutzung nach Verbrauch."}}, {"@type": "WebPage", "@id": "https://open.tutor.new/datenschutz/#webpage", "url": "https://open.tutor.new/datenschutz/", "name": "Datenschutz-Steckbrief – openTutor", "inLanguage": "de", "isPartOf": {"@id": "https://open.tutor.new/#website"}, "about": {"@id": "https://open.tutor.new/#software"}, "dateModified": "2026-11-27"}]}</script>
+</head>
+<body>
+
+<header class="masthead">
+    <div class="wrap">
+        <a class="wordmark" href="/"><svg class="wordmark-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="11.5" r="6.5" fill="#14a35a"/><path stroke="currentColor" d="M9 23c11 7 35 7 46 0M32 28.5V57" fill="none" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>openTutor</a>
+        <nav aria-label="Links">
+            <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+            <a href="mailto:friedrich@tutor.new">Kontakt</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="dp">
+        <div class="wrap">
+            <a class="dp-back" href="/">← Zurück zu openTutor</a>
+            <h1>Datenschutz-Steckbrief</h1>
+            <p class="dp-lead">Was wir zusagen, zum Weitergeben an Schulleitung, Träger und Datenschutzstelle.</p>
+            <div class="dp-groups">
+                <article class="dp-group">
+                    <svg class="dp-icon dp-blue" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3M12 14.5v2.5"/></g></svg>
+                    <h2>Zugang &amp; Einsicht</h2>
+                    <dl>
+                        <div><dt>Zugang</dt><dd>Anmeldecode pro Schüler:in<small>Von der Schule ausgegeben, jederzeit erneuerbar, ohne private Konten.</small></dd></div>
+                        <div><dt>Einsicht</dt><dd>Volle Transparenz<small>Lehrpersonen sehen jede Interaktion ihrer Klasse mit dem Tutor.</small></dd></div>
+                        <div><dt>Löschung</dt><dd>Auf Anfrage, vollständig<small>Für einzelne Schüler:innen oder die ganze Klasse.</small></dd></div>
+                    </dl>
+                </article>
+                <article class="dp-group">
+                    <svg class="dp-icon dp-green" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.6"/></g></svg>
+                    <h2>DSG &amp; DSGVO</h2>
+                    <dl>
+                        <div><dt>Rechtsrahmen</dt><dd>DSG und DSGVO<small>Schweizer Datenschutzgesetz und EU-Verordnung.</small></dd></div>
+                        <div><dt>Verträge</dt><dd>AVV auf Anfrage<small>Auftragsverarbeitungsvertrag für Ihre Schule oder Ihren Träger.</small></dd></div>
+                        <div><dt>Quellcode</dt><dd>Öffentlich<small>Jede Schule kann nachlesen, wie der Tutor arbeitet und was mit den Daten geschieht.</small></dd></div>
+                    </dl>
+                </article>
+                <article class="dp-group">
+                    <svg class="dp-icon dp-orange" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></g></svg>
+                    <h2>Schweiz &amp; EU</h2>
+                    <dl>
+                        <div><dt>Hosting</dt><dd>Schweiz oder EU<small>Gespeichert wird ausschliesslich auf Servern in diesen Regionen.</small></dd></div>
+                        <div><dt>Eigener Server</dt><dd>Einer pro Schule<small>Bei uns gehostet läuft jede Schule auf ihrem eigenen Server, auf Wunsch nur in der Schweiz.</small></dd></div>
+                        <div><dt>Selbst betreiben</dt><dd>Auf Ihrem Server<small>Die Daten verlassen Ihre Infrastruktur nur für KI und Sprache.</small></dd></div>
+                    </dl>
+                </article>
+                <article class="dp-group">
+                    <svg class="dp-icon dp-purple" viewBox="0 0 48 48" aria-hidden="true"><circle class="tint" cx="24" cy="24" r="20"/><g class="glyph" transform="translate(7.8 7.8) scale(1.35)"><circle cx="12" cy="12" r="8"/><path d="M6.4 6.4l11.2 11.2M9 10.5c.8-1.4 2.6-2 4-1.2M15 13.5c-.8 1.4-2.6 2-4 1.2"/></g></svg>
+                    <h2>Kein KI-Training</h2>
+                    <dl>
+                        <div><dt>KI-Training</dt><dd>Nein<small>Die Daten Ihrer Klassen trainieren keine KI-Modelle.</small></dd></div>
+                        <div><dt>Werbung &amp; Verkauf</dt><dd>Keine<small>Schülerdaten sind kein Geschäftsmodell.</small></dd></div>
+                        <div><dt>Schutzhinweise</dt><dd>Lehrperson wird informiert<small>Wenn ein Gespräch ein heikles Thema berührt.</small></dd></div>
+                    </dl>
+                </article>
+            </div>
+            <p class="dp-legal">Rechtlich massgebend sind der Vertrag mit Ihrer Schule und die Vereinbarung zur Auftragsverarbeitung.</p>
+            <div class="dp-cta">
+                <div>
+                    <h2>Fragen Ihrer Datenschutzstelle? Wir beantworten sie direkt.</h2>
+                    <p>Schicken Sie uns die Fragen Ihrer Schule, Ihres Trägers oder Ihres Kantons. Sie bekommen schriftliche Antworten von den Menschen, die openTutor bauen, und auf Wunsch den Auftragsverarbeitungsvertrag.</p>
+                </div>
+                <div class="dp-actions">
+                    <a class="btn btn-primary" href="mailto:friedrich@tutor.new?subject=Datenschutzfragen%20zu%20openTutor">Fragen stellen</a>
+                    <a class="btn" href="/">Zurück zu openTutor</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="colophon">
+    <div class="wrap">
+        <p>openTutor ist das quelloffene KI-Betriebssystem für Schulen: ein eigener KI-Tutor für jedes Kind, mit dem Material der Lehrperson, auf Servern in der Schweiz und der EU. Entwickelt von der Sophia Labs GmbH in Zürich.</p>
+        <a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a>
+        <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
+        <a href="/impressum/">Impressum</a>
+        <a href="/impressum/#datenschutz">Datenschutz</a>
+    </div>
+</footer>
+
+</body>
+</html>
