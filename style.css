@@ -277,3 +277,44 @@ a:hover {
         padding-right: 4px;
     }
 }
+
+/* Footer: the mark and name on the left, the legal links on the right, the description below. */
+.colophon {
+    border-top: 3px solid var(--ink);
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.colophon .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px 24px;
+    align-items: baseline;
+    padding-top: 22px;
+    padding-bottom: 48px;
+}
+
+.colophon-brand {
+    font-family: var(--serif);
+    font-size: 21px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.colophon nav {
+    display: flex;
+    gap: 22px;
+}
+
+.colophon nav a {
+    color: var(--ink);
+}
+
+.colophon p {
+    grid-column: 1 / -1;
+    max-width: 52em;
+    margin: 0;
+    line-height: 1.5;
+}

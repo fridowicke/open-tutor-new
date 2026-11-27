@@ -25,7 +25,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://open.tutor.new/#website", "url": "https://open.tutor.new/", "name": "openTutor", "inLanguage": "de", "publisher": {"@id": "https://open.tutor.new/#organization"}}, {"@type": "Organization", "@id": "https://open.tutor.new/#organization", "name": "Sophia Labs GmbH", "url": "https://open.tutor.new/", "logo": "https://open.tutor.new/icon-512.png", "email": "friedrich@tutor.new", "address": {"@type": "PostalAddress", "streetAddress": "Schärenmoosstrasse 76", "postalCode": "8052", "addressLocality": "Zürich", "addressCountry": "CH"}, "taxID": "CHE-441.358.240"}, {"@type": "SoftwareApplication", "@id": "https://open.tutor.new/#software", "name": "openTutor", "description": "openTutor ist das quelloffene KI-Betriebssystem für Schulen: ein eigener KI-Tutor für jedes Kind, mit dem Material der Lehrperson, auf Servern in der Schweiz und der EU.", "url": "https://open.tutor.new/", "applicationCategory": "EducationalApplication", "operatingSystem": "Web, iOS, Android", "inLanguage": "de", "author": {"@id": "https://open.tutor.new/#organization"}, "publisher": {"@id": "https://open.tutor.new/#organization"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CHF", "description": "Die Software ist kostenlos. Bei uns gehostet zahlt die Schule die KI-Nutzung nach Verbrauch."}}, {"@type": "WebPage", "@id": "https://open.tutor.new/#webpage", "url": "https://open.tutor.new/", "name": "openTutor – Das KI-Betriebssystem für Schulen", "inLanguage": "de", "isPartOf": {"@id": "https://open.tutor.new/#website"}, "about": {"@id": "https://open.tutor.new/#software"}, "dateModified": "2026-11-27"}, {"@type": "FAQPage", "@id": "https://open.tutor.new/#faq", "url": "https://open.tutor.new/", "mainEntity": [{"@type": "Question", "name": "Für welche Fächer und Stufen?", "acceptedAnswer": {"@type": "Answer", "text": "Für alle Fächer und Stufen. Der Tutor übt mit dem Material, das Sie hochladen."}}, {"@type": "Question", "name": "Bekommen die Schüler:innen Lösungen vorgesagt?", "acceptedAnswer": {"@type": "Answer", "text": "Nein. Der Tutor fragt zurück und gibt Denkanstösse, den nächsten Schritt machen die Schüler:innen selbst."}}, {"@type": "Question", "name": "Was, wenn die KI Fehler macht?", "acceptedAnswer": {"@type": "Answer", "text": "Der Tutor arbeitet mit Ihrem Material, nicht mit dem freien Netz. Und Sie sehen jede Interaktion und können eingreifen."}}, {"@type": "Question", "name": "Was geschieht mit den Daten?", "acceptedAnswer": {"@type": "Answer", "text": "Sie bleiben auf Servern in der Schweiz oder EU, nach DSG und DSGVO, und trainieren keine KI-Modelle. Mehr im Datenschutz-Steckbrief."}}, {"@type": "Question", "name": "Wer sieht die Gespräche?", "acceptedAnswer": {"@type": "Answer", "text": "Die Lehrpersonen der Klasse. Berührt ein Gespräch ein heikles Thema, wird die Lehrperson informiert."}}, {"@type": "Question", "name": "Brauchen die Schüler:innen ein Schulgerät?", "acceptedAnswer": {"@type": "Answer", "text": "Nein. openTutor läuft im Browser und als App, auch auf dem eigenen Handy. Angemeldet wird mit einem Code."}}, {"@type": "Question", "name": "Was kostet openTutor?", "acceptedAnswer": {"@type": "Answer", "text": "Selbst betrieben nichts. Bei uns gehostet ebenfalls nichts, bezahlt wird nur die KI-Nutzung als Tutor-Zeit."}}, {"@type": "Question", "name": "Wie lange dauert die Einführung?", "acceptedAnswer": {"@type": "Answer", "text": "Eine Klasse ist in einer Freistunde eingerichtet: Material hochladen, Codes verteilen, loslegen."}}]}]}</script>
     <link rel="preload" href="/fonts/Castoro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="/style.css?v=c2c5f101f2">
+    <link rel="stylesheet" href="/style.css?v=b874f4f20d">
     <style>
         .lead {
             text-wrap: balance;
@@ -241,24 +241,6 @@
 
         .paths li {
             padding: 2px 0;
-        }
-
-        .colophon {
-            border-top: 3px solid var(--ink);
-            font-size: 14px;
-            color: var(--muted);
-        }
-
-        .colophon .wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem 1.6rem;
-            padding-top: 18px;
-            padding-bottom: 44px;
-        }
-
-        .colophon p {
-            margin: 0 auto 0 0;
         }
 
         @media (max-width: 860px) {
@@ -1577,11 +1559,12 @@
 
 <footer class="colophon">
     <div class="wrap">
+        <a class="colophon-brand" href="/"><svg class="wordmark-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="11.5" r="6.5" fill="#14a35a"/><path stroke="currentColor" d="M9 23c11 7 35 7 46 0M32 28.5V57" fill="none" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>openTutor</a>
+        <nav aria-label="Rechtliches">
+            <a href="/impressum/">Impressum</a>
+            <a href="/impressum/#datenschutz">Datenschutz</a>
+        </nav>
         <p>openTutor ist das quelloffene KI-Betriebssystem für Schulen: ein eigener KI-Tutor für jedes Kind, mit dem Material der Lehrperson, auf Servern in der Schweiz und der EU. Entwickelt von der Sophia Labs GmbH in Zürich.</p>
-        <a href="mailto:friedrich@tutor.new">friedrich@tutor.new</a>
-        <a href="mailto:friedrich@tutor.new?subject=Code%20von%20openTutor%20anfragen">Code anfragen</a>
-        <a href="/impressum/">Impressum</a>
-        <a href="/impressum/#datenschutz">Datenschutz</a>
     </div>
 </footer>
 
